@@ -1,0 +1,5225 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui s'en charge ? — Rendre visible la charge mentale et la charge domestique</title>
+<style>
+  :root {
+    --noir: #1a1a1a;
+    --noir-doux: #2c2c2c;
+    --gris-fonce: #4a4a4a;
+    --gris: #7a7a7a;
+    --gris-clair: #d4d4d0;
+    --gris-tres-clair: #efece5;
+    --beige: #f5f2ea;
+    --blanc: #ffffff;
+    --rouge: #a52a2a;
+    --rouge-fonce: #7a1f1f;
+    --rouge-clair: #d4756b;
+    --vert-sourd: #4a6741;
+    --orange-sourd: #c97b2e;
+    --jaune-attention: #d4a017;
+    --rouge-fond: #f5e6e6;
+    --vert-fond: #e8eee5;
+    --orange-fond: #fbeed8;
+    --jaune-fond: #fbf5e0;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background: var(--beige);
+    color: var(--noir);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* EN-TÊTE */
+  .header {
+    border-bottom: 2px solid var(--noir);
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .title-block { flex: 1; min-width: 280px; }
+  h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 4px;
+    color: var(--noir);
+    letter-spacing: -0.02em;
+  }
+  .sous-titre {
+    font-size: 15px;
+    color: var(--gris-fonce);
+    font-style: italic;
+    margin: 0;
+  }
+  .header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  .header-actions .btn { white-space: nowrap; }
+
+  /* CITATION */
+  .citation {
+    background: var(--noir);
+    color: var(--blanc);
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .citation::before {
+    content: "«";
+    position: absolute;
+    top: -20px;
+    left: 16px;
+    font-family: Georgia, serif;
+    font-size: 80px;
+    color: var(--rouge);
+    line-height: 1;
+  }
+  .citation-texte {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* MESSAGE D'ACCUEIL */
+  .accueil-message {
+    background: var(--blanc);
+    border-left: 4px solid var(--rouge);
+    padding: 24px 28px;
+    margin-bottom: 32px;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .accueil-message h2 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    margin: 0 0 12px;
+    color: var(--noir);
+  }
+  .accueil-message p {
+    margin: 0 0 10px;
+    color: var(--noir-doux);
+  }
+  .accueil-message .signature {
+    margin-top: 16px;
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: var(--gris-fonce);
+  }
+  .accueil-message .signature strong {
+    display: block;
+    font-style: normal;
+    color: var(--noir);
+  }
+
+  /* SECTIONS */
+  .section-titre {
+    font-size: 13px;
+    color: var(--gris-fonce);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin: 0 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--gris-clair);
+  }
+
+  /* PERSONNES */
+  .personnes-config { margin-bottom: 32px; }
+  .personnes-liste {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .personne-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    padding: 8px 12px;
+  }
+  .personne-couleur {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .personne-nom {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--gris-clair);
+    font-size: 14px;
+    font-family: inherit;
+    padding: 2px 4px;
+    width: 140px;
+    color: var(--noir);
+  }
+  .personne-nom:focus { outline: none; border-bottom-color: var(--noir); }
+  .personne-supprimer {
+    background: transparent;
+    border: none;
+    color: var(--gris);
+    cursor: pointer;
+    padding: 2px 4px;
+    font-size: 16px;
+  }
+  .personne-supprimer:hover { color: var(--rouge); }
+
+  /* BOUTONS */
+  .btn {
+    background: var(--blanc);
+    border: 1px solid var(--noir);
+    color: var(--noir);
+    font-family: inherit;
+    font-size: 14px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:hover { background: var(--noir); color: var(--blanc); }
+  .btn-primary { background: var(--noir); color: var(--blanc); }
+  .btn-primary:hover { background: var(--rouge); border-color: var(--rouge); }
+  .btn-rouge {
+    background: var(--rouge);
+    color: var(--blanc);
+    border-color: var(--rouge);
+  }
+  .btn-rouge:hover { background: var(--rouge-fonce); border-color: var(--rouge-fonce); }
+  .btn-petit { font-size: 12px; padding: 4px 10px; }
+  .btn-icone {
+    width: 18px; height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* GRILLE MODULES */
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .module-card {
+    background: var(--blanc);
+    border: 1px solid var(--noir);
+    padding: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.1s, box-shadow 0.1s;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+  }
+  .module-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 var(--noir);
+  }
+  .module-card.personnalise { border-style: dashed; }
+  .module-card-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 12px;
+    color: var(--rouge);
+  }
+  .module-card-icon svg { width: 100%; height: 100%; }
+  .module-card h3 {
+    font-size: 17px;
+    margin: 0 0 4px;
+    font-weight: 700;
+    color: var(--noir);
+  }
+  .module-card-desc {
+    font-size: 13px;
+    color: var(--gris-fonce);
+    margin: 0 0 16px;
+    flex: 1;
+  }
+  .module-card-progress { margin-top: auto; }
+  .module-card-progress-bar {
+    height: 6px;
+    background: var(--gris-tres-clair);
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .module-card-progress-fill {
+    height: 100%;
+    background: var(--noir);
+    transition: width 0.3s;
+  }
+  .module-card-progress-fill.complet { background: var(--vert-sourd); }
+  .module-card-progress-text {
+    font-size: 11px;
+    color: var(--gris-fonce);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .ajouter-module-card {
+    background: transparent;
+    border: 2px dashed var(--gris-clair);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    color: var(--gris-fonce);
+    font-family: inherit;
+    font-size: 14px;
+    min-height: 180px;
+  }
+  .ajouter-module-card:hover {
+    border-color: var(--noir);
+    color: var(--noir);
+  }
+
+  /* ÉCRAN MODULE */
+  .module-page { display: none; }
+  .module-page.active { display: block; }
+  .home-page.hidden { display: none; }
+
+  .module-header { margin-bottom: 16px; }
+  .breadcrumb {
+    font-size: 13px;
+    color: var(--gris-fonce);
+    margin-bottom: 8px;
+  }
+  .breadcrumb a {
+    color: var(--gris-fonce);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .breadcrumb a:hover {
+    color: var(--rouge);
+    text-decoration: underline;
+  }
+  .module-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+  }
+  .module-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--noir);
+  }
+  .module-desc {
+    font-size: 15px;
+    color: var(--gris-fonce);
+    font-style: italic;
+    margin: 0 0 16px;
+  }
+
+  /* TOGGLE RAPIDE / APPROFONDI */
+  .mode-toggle-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .mode-toggle {
+    display: flex;
+    background: var(--blanc);
+    border: 1px solid var(--noir);
+    align-items: stretch;
+  }
+  .mode-toggle button {
+    background: transparent;
+    border: none;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    color: var(--noir);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    min-height: 42px;
+  }
+  .mode-toggle button.actif {
+    background: var(--noir);
+    color: var(--blanc);
+  }
+  .mode-toggle button .mode-sublabel {
+    font-size: 10px;
+    font-style: italic;
+    color: var(--rouge);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
+  .mode-toggle button.actif .mode-sublabel {
+    color: var(--rouge-clair);
+  }
+
+  .module-stats {
+    display: flex;
+    gap: 24px;
+    padding: 12px 16px;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .module-stat { font-size: 13px; color: var(--gris-fonce); }
+  .module-stat strong { color: var(--noir); font-weight: 700; }
+
+  .section-modul { margin-bottom: 24px; }
+
+  /* SECTION REPLIABLE */
+  .section-modul-titre {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 12px;
+    color: var(--noir);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--gris-clair);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+  }
+  .section-modul-titre:hover { color: var(--rouge); }
+  .section-toggle-icon {
+    display: inline-block;
+    transition: transform 0.2s;
+    color: var(--gris);
+    font-size: 14px;
+  }
+  .section-modul.replie .section-toggle-icon { transform: rotate(-90deg); }
+  .section-modul.replie .section-content { display: none; }
+  .section-titre-stats {
+    margin-left: auto;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 12px;
+    color: var(--gris);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* TÂCHE INACTIVE */
+  .tache-inactive {
+    background: var(--gris-tres-clair);
+    padding: 10px 16px;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    opacity: 0.7;
+  }
+  .tache-inactive .tache-nom {
+    font-size: 13px;
+    color: var(--gris-fonce);
+    flex: 1;
+    min-width: 200px;
+  }
+  .tache-temps {
+    font-size: 12px;
+    color: var(--gris-fonce);
+    white-space: nowrap;
+  }
+
+  /* TÂCHE ACTIVE */
+  .tache-active {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-left: 4px solid var(--rouge);
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .tache-active-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .tache-active-nom {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--noir);
+    flex: 1;
+    min-width: 200px;
+  }
+  .tache-active-nom input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--gris-clair);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--noir);
+    padding: 2px 0;
+  }
+  .tache-active-nom input:focus {
+    outline: none;
+    border-bottom-color: var(--noir);
+  }
+  .tache-active-nom input:hover { border-bottom-color: var(--gris-fonce); }
+  .tache-actions-mini {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .tache-temps-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .tache-temps-row label {
+    font-size: 12px;
+    color: var(--gris-fonce);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .tache-temps-row input[type="number"] {
+    width: 80px;
+    border: 1px solid var(--gris-clair);
+    padding: 4px 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--blanc);
+  }
+  .tache-temps-row .label-minutes {
+    font-size: 13px;
+    color: var(--gris-fonce);
+  }
+  .tache-temps-row select {
+    border: 1px solid var(--gris-clair);
+    padding: 4px 8px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--blanc);
+  }
+  .equivalent-jour {
+    font-size: 12px;
+    color: var(--gris);
+    font-style: italic;
+    margin-left: auto;
+  }
+
+  /* BLOC PALIERS (titre commun) */
+  .paliers-bloc {
+    background: var(--beige);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+  }
+  .paliers-bloc-titre {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--noir);
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .paliers-bloc-aide {
+    font-size: 12px;
+    color: var(--gris-fonce);
+    font-style: italic;
+    margin: 0 0 10px;
+  }
+
+  /* CURSEUR 2 PERSONNES */
+  .curseur-bloc {
+    padding: 8px 0 4px;
+  }
+  .curseur-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+  .curseur-label-personne {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 700;
+    color: var(--noir);
+  }
+  .curseur-label-personne .pers-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .curseur-label-personne .pers-pct {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    color: var(--rouge);
+    margin-left: 4px;
+  }
+  .curseur-track-container {
+    position: relative;
+    padding: 12px 0 6px;
+  }
+  .curseur-track {
+    position: relative;
+    height: 8px;
+    background: var(--gris-clair);
+    border-radius: 4px;
+  }
+  .curseur-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 4px 0 0 4px;
+  }
+  .curseur-encoches {
+    position: absolute;
+    top: -3px;
+    left: 0;
+    right: 0;
+    height: 14px;
+    pointer-events: none;
+  }
+  .curseur-encoche {
+    position: absolute;
+    width: 2px;
+    height: 14px;
+    background: var(--blanc);
+    transform: translateX(-50%);
+  }
+  .curseur-encoche-label {
+    position: absolute;
+    top: 16px;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--gris);
+    white-space: nowrap;
+  }
+  .curseur-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .curseur-bulle {
+    position: absolute;
+    top: -2px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--noir);
+    transform: translateX(-50%);
+    pointer-events: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border: 2px solid var(--blanc);
+  }
+  .curseur-paliers-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    gap: 4px;
+  }
+  .curseur-palier-btn {
+    flex: 1;
+    background: transparent;
+    border: 1px solid var(--gris-clair);
+    color: var(--gris-fonce);
+    font-family: inherit;
+    font-size: 11px;
+    padding: 4px 6px;
+    cursor: pointer;
+    text-align: center;
+  }
+  .curseur-palier-btn:hover {
+    background: var(--blanc);
+    color: var(--noir);
+  }
+  .curseur-palier-btn.actif {
+    background: var(--noir);
+    color: var(--blanc);
+    border-color: var(--noir);
+  }
+
+  /* PALIERS GRID (3+ personnes) */
+  .paliers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  .palier-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--blanc);
+    padding: 8px 10px;
+    border: 1px solid var(--gris-clair);
+  }
+  .palier-row .pers-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .palier-row .pers-name {
+    font-size: 13px;
+    color: var(--noir);
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .palier-row select {
+    border: 1px solid var(--gris-clair);
+    padding: 4px 6px;
+    font-family: inherit;
+    font-size: 13px;
+    background: var(--blanc);
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  /* SOMME BADGE (3+ personnes) */
+  .somme-bloc {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .somme-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--gris-tres-clair);
+    color: var(--gris-fonce);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .somme-badge.ok {
+    background: var(--vert-fond);
+    color: var(--vert-sourd);
+  }
+  .somme-badge.attention {
+    background: var(--jaune-fond);
+    color: var(--jaune-attention);
+  }
+  .suggestion {
+    font-size: 12px;
+    color: var(--jaune-attention);
+    padding: 4px 10px;
+    background: var(--jaune-fond);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex: 1;
+    min-width: 200px;
+  }
+  .suggestion button {
+    background: var(--blanc);
+    border: 1px solid var(--jaune-attention);
+    color: var(--jaune-attention);
+    padding: 2px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .suggestion button:hover { background: var(--jaune-attention); color: var(--blanc); }
+
+  /* OBJETS RELATIONNELS */
+  .obj-rel-active {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-left: 4px solid var(--rouge);
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .intensite-bloc {
+    background: var(--beige);
+    padding: 10px 14px;
+    margin-bottom: 8px;
+  }
+  .intensite-bloc-titre {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--noir);
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .intensite-options {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .intensite-options button {
+    flex: 1;
+    min-width: 80px;
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--noir);
+  }
+  .intensite-options button.actif {
+    background: var(--noir);
+    color: var(--blanc);
+    border-color: var(--noir);
+  }
+  .intensite-options button:hover:not(.actif) {
+    background: var(--gris-tres-clair);
+  }
+
+  .ajouter-tache-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  /* FOOTER */
+  .footer {
+    border-top: 2px solid var(--noir);
+    margin-top: 48px;
+    padding-top: 24px;
+    font-size: 12px;
+    color: var(--gris-fonce);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-credits { flex: 1; }
+  .footer-credits a { color: var(--noir); text-decoration: underline; }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .modal-overlay.actif { display: flex; }
+  .modal {
+    background: var(--blanc);
+    border: 2px solid var(--noir);
+    max-width: 560px;
+    width: 100%;
+    padding: 28px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal h2 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    margin: 0 0 16px;
+  }
+  .modal-row { margin-bottom: 14px; }
+  .modal-row label {
+    display: block;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gris-fonce);
+    margin-bottom: 4px;
+  }
+  .modal-row input, .modal-row select, .modal-row textarea {
+    width: 100%;
+    border: 1px solid var(--gris-clair);
+    padding: 8px 10px;
+    font-family: inherit;
+    font-size: 14px;
+    background: var(--blanc);
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  /* TEMPLATES LIST in modal */
+  .templates-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .template-item {
+    background: var(--gris-tres-clair);
+    border: 1px solid var(--gris-clair);
+    padding: 10px 14px;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    color: var(--noir);
+    transition: background 0.1s;
+  }
+  .template-item:hover {
+    background: var(--beige);
+    border-color: var(--noir);
+  }
+  .template-item h4 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .template-item .template-desc {
+    margin: 0;
+    font-size: 12px;
+    color: var(--gris-fonce);
+  }
+  .template-item .template-tasks-count {
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .modal-section-titre {
+    font-size: 12px;
+    color: var(--gris-fonce);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 16px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--gris-clair);
+  }
+
+  #import-file { display: none; }
+
+  /* =========== PAGE BILAN =========== */
+  .bilan-page { display: none; }
+  .bilan-page.active { display: block; }
+
+  .bilan-header {
+    margin-bottom: 24px;
+  }
+  .bilan-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 4px;
+    color: var(--noir);
+  }
+  .bilan-soustitre {
+    font-size: 15px;
+    color: var(--gris-fonce);
+    font-style: italic;
+    margin: 0 0 16px;
+  }
+
+  /* Section du bilan */
+  .bilan-section {
+    background: var(--blanc);
+    border: 1px solid var(--gris-clair);
+    border-left: 4px solid var(--noir);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+  .bilan-section.accent {
+    border-left-color: var(--rouge);
+  }
+  .bilan-section-titre {
+    font-size: 12px;
+    color: var(--gris-fonce);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+  .bilan-section-soustitre {
+    font-family: Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    color: var(--noir);
+  }
+
+  /* Métriques de synthèse */
+  .bilan-metriques {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .metrique-bloc {
+    border-bottom: 1px solid var(--gris-clair);
+    padding-bottom: 16px;
+  }
+  .metrique-bloc:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .metrique-titre {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .metrique-nom {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--noir);
+  }
+  .metrique-meta {
+    font-size: 12px;
+    color: var(--gris-fonce);
+    font-style: italic;
+  }
+
+  /* Phrases-clés */
+  .phrases-cles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .phrase-cle {
+    font-family: Georgia, serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--noir);
+    padding: 12px 16px;
+    background: var(--beige);
+    border-left: 3px solid var(--rouge);
+  }
+  .phrase-cle.equilibre {
+    border-left-color: var(--vert-sourd);
+  }
+  .phrase-cle.cumul {
+    background: var(--rouge-fond);
+    border-left-color: var(--rouge);
+  }
+  .phrase-cle.inversion {
+    background: var(--jaune-fond);
+    border-left-color: var(--jaune-attention);
+  }
+  .phrase-cle.info {
+    font-style: italic;
+    color: var(--gris-fonce);
+    background: var(--gris-tres-clair);
+    border-left-color: var(--gris);
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+  }
+  .phrase-cle.proportionnel {
+    border-left-color: var(--orange-sourd);
+  }
+
+  /* Légende personnes */
+  .legende-personnes {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .legende-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+  }
+  .legende-pastille {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  /* Détail par module */
+  .module-detail {
+    border-bottom: 1px solid var(--gris-clair);
+    padding: 16px 0;
+  }
+  .module-detail:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .module-detail:first-child { padding-top: 0; }
+  .module-detail-titre {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .module-detail-nom {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--noir);
+    margin: 0;
+  }
+  .module-detail-meta {
+    font-size: 12px;
+    color: var(--gris-fonce);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Note de fin */
+  .bilan-note {
+    background: var(--gris-tres-clair);
+    padding: 16px 20px;
+    border-left: 4px solid var(--gris);
+    margin-bottom: 24px;
+    font-size: 13px;
+    color: var(--gris-fonce);
+    line-height: 1.6;
+  }
+  .bilan-note strong { color: var(--noir); }
+
+  /* État vide */
+  .bilan-vide {
+    text-align: center;
+    padding: 60px 32px;
+    background: var(--blanc);
+    border: 2px dashed var(--gris-clair);
+  }
+  .bilan-vide h3 {
+    font-family: Georgia, serif;
+    font-size: 22px;
+    margin: 0 0 12px;
+    color: var(--noir);
+  }
+  .bilan-vide p {
+    color: var(--gris-fonce);
+    margin: 0 0 20px;
+    line-height: 1.6;
+  }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--noir);
+    color: var(--blanc);
+    padding: 12px 20px;
+    font-size: 14px;
+    box-shadow: 4px 4px 0 var(--rouge);
+    z-index: 2000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+  }
+  .toast.actif { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 28px; }
+    .module-title { font-size: 24px; }
+    .page { padding: 20px 16px 60px; }
+    /* Forcer une seule colonne en dessous de 600px pour garantir l'affichage */
+    .modules-grid {
+      grid-template-columns: 1fr;
+    }
+    /* Réduire les paddings des cartes pour gagner de la place */
+    .module-card { padding: 16px; }
+    /* Empêcher les boutons header de se serrer */
+    .header-actions {
+      align-items: stretch;
+      width: 100%;
+    }
+    .header-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+    /* Les boutons de mode toggle peuvent déborder */
+    .module-title-row {
+      flex-direction: column;
+      align-items: stretch !important;
+    }
+    .mode-toggle-wrapper {
+      align-items: stretch;
+    }
+    .mode-toggle { width: 100%; }
+    .mode-toggle button { flex: 1; }
+  }
+
+  /* iPhone SE / écrans très étroits */
+  @media (max-width: 380px) {
+    .page { padding: 16px 12px 40px; }
+    h1 { font-size: 24px; }
+    .module-card { padding: 14px; }
+    .citation { padding: 20px 18px; }
+    .citation-texte { font-size: 16px; }
+    .accueil-message { padding: 18px 16px; }
+  }
+
+  /* =========== IMPRESSION / PDF =========== */
+  /* Quand l'utilisateur lance "Imprimer", on transforme la page bilan
+     en document papier propre. Les autres pages sont masquées. */
+
+  @media print {
+    /* Forcer les couleurs à s'imprimer (sinon Chrome retire les fonds) */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+
+    /* Masquer tout ce qui n'est pas le bilan */
+    body { background: var(--blanc); }
+    .header,
+    .home-page,
+    .module-page,
+    .footer,
+    .toast,
+    .modal-overlay,
+    #btn-bilan,
+    .bilan-page .breadcrumb,
+    .bilan-page #bilan-retour-accueil-bas,
+    .bilan-page #bilan-retour-accueil-2,
+    .bilan-export-actions {
+      display: none !important;
+    }
+
+    .page {
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+    .bilan-page {
+      display: block !important;
+    }
+
+    /* Page de garde */
+    .pdf-cover {
+      display: block !important;
+      page-break-after: always;
+      text-align: center;
+      padding: 80px 40px 40px;
+      min-height: 90vh;
+      position: relative;
+    }
+    .pdf-cover h1 {
+      font-family: Georgia, serif;
+      font-size: 48px;
+      margin: 0 0 12px;
+      color: var(--noir);
+      letter-spacing: -0.02em;
+    }
+    .pdf-cover .pdf-cover-soustitre {
+      font-size: 18px;
+      color: var(--gris-fonce);
+      font-style: italic;
+      margin: 0 0 80px;
+    }
+    .pdf-cover .pdf-cover-meta {
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 2px solid var(--noir);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .pdf-cover .pdf-cover-personnes {
+      font-family: Georgia, serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    .pdf-cover .pdf-cover-personnes .pers-couleur {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      vertical-align: middle;
+      margin: 0 6px;
+    }
+    .pdf-cover .pdf-cover-date {
+      font-size: 14px;
+      color: var(--gris-fonce);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .pdf-cover .pdf-cover-citation {
+      margin-top: 60px;
+      font-family: Georgia, serif;
+      font-size: 16px;
+      font-style: italic;
+      color: var(--gris-fonce);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+    .pdf-cover-footer {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      font-size: 11px;
+      color: var(--gris);
+      letter-spacing: 0.05em;
+    }
+
+    /* En écran on cache la page de garde */
+    .pdf-cover {
+      display: none;
+    }
+
+    /* En-tête bilan */
+    .bilan-header {
+      margin-bottom: 20px;
+    }
+    .bilan-title {
+      font-size: 24px;
+      page-break-after: avoid;
+    }
+
+    /* Sections : éviter les coupes au milieu */
+    .bilan-section {
+      page-break-inside: avoid;
+      margin-bottom: 16px;
+      padding: 16px 20px;
+      box-shadow: none;
+      border-left-width: 3px;
+    }
+    .bilan-section-soustitre {
+      page-break-after: avoid;
+      font-size: 16px;
+    }
+
+    .phrase-cle {
+      page-break-inside: avoid;
+      font-size: 13px;
+    }
+
+    .module-detail {
+      page-break-inside: avoid;
+    }
+
+    /* Le détail (s'il est imprimé) commence sur une nouvelle page */
+    .pdf-detail-section {
+      display: block !important;
+      page-break-before: always;
+    }
+
+    /* Note de fin */
+    .bilan-note {
+      page-break-inside: avoid;
+      font-size: 11px;
+    }
+
+    /* Liens dans le PDF : pas de soulignement bleu */
+    a { color: inherit; text-decoration: none; }
+
+    /* Marges de page */
+    @page {
+      margin: 1.5cm 1.5cm;
+      size: A4;
+    }
+  }
+
+  /* Page de garde et détail-PDF : masqués en écran, visibles en print */
+  .pdf-cover, .pdf-detail-section {
+    display: none;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="header">
+    <div class="header-top">
+      <div class="title-block">
+        <h1><span>Qui s'en charge ?</span></h1>
+        <p class="sous-titre">Rendre visible la charge mentale et la charge domestique</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-petit" id="btn-simuler" style="background: #fbf5e0; border-color: var(--orange-sourd); color: var(--orange-sourd);" title="Remplit l'outil avec un scénario fictif pour tester le bilan">
+          <span class="btn-icone">🧪</span>Simulation (DEV)
+        </button>
+        <button class="btn btn-petit" id="btn-sauvegarder">
+          <span class="btn-icone">💾</span>Exporter mon fichier
+        </button>
+        <button class="btn btn-petit" id="btn-reprendre">
+          <span class="btn-icone">📂</span>Importer un fichier
+        </button>
+        <button class="btn btn-petit" id="btn-reset" style="border-color: var(--gris); color: var(--gris-fonce);">
+          <span class="btn-icone">🗑️</span>Tout effacer
+        </button>
+        <input type="file" id="import-file" accept=".json">
+      </div>
+    </div>
+  </header>
+
+  <!-- ACCUEIL -->
+  <div id="home-page" class="home-page">
+
+    <div class="citation">
+      <p class="citation-texte">
+        Ce qui n'est pas nommé n'existe pas. Et ce qui n'existe pas ne peut être partagé.
+      </p>
+    </div>
+
+    <div class="accueil-message">
+      <h2>Bienvenue.</h2>
+      <p>Si vous vous retrouvez ici, c'est que vous avez envie, ou besoin, de mettre à plat,
+      de parler de la gestion du quotidien. Que ce soit après une dispute, ou simplement
+      avec le besoin d'un outil pour faciliter l'échange, vous êtes au bon endroit.</p>
+
+      <p>Cet outil est pensé pour s'adapter à vous, pas l'inverse. Vous pouvez le remplir
+      vite ou plus en profondeur, vous concentrer sur la charge domestique « pure » ou faire
+      apparaître aussi la charge mentale qui se cache derrière. Les modules vous permettent
+      de ne pas tout faire d'un coup&nbsp;: vous prenez ce qui vous concerne, vous laissez
+      le temps aux échanges, vous y revenez plus tard. Votre travail se sauvegarde tout seul.</p>
+
+      <p><strong>Le but n'est pas de chiffrer précisément les minutes incalculables de votre
+      quotidien.</strong> Le but, c'est la <em>tendance globale</em> — et de créer les conditions
+      du «&nbsp;Je pensais même pas que tu faisais ça&nbsp;» ou du «&nbsp;Je savais pas que
+      ça te prenait autant de temps&nbsp;». Les chiffres sont des prétextes à la conversation,
+      pas des verdicts.</p>
+
+      <p>Les items proposés ne sont qu'un point de départ. Vous pourrez les modifier, en
+      retirer, en ajouter — votre quotidien n'est pas le mien.</p>
+
+      <p>Alors prenez-vous une soirée, un plaid et un thé, ou allongez-vous au soleil dans
+      un parc. Vous aurez des perceptions différentes. Ne cherchez pas à tomber d'accord
+      sur tout&nbsp;: l'enjeu, c'est de rendre visible, et d'entendre comment l'autre voit
+      les choses.</p>
+
+      <p>Prenez soin de vous.</p>
+
+      <div class="signature">
+        <strong>Arthur Guillieux</strong>
+        Psychologue clinicien
+      </div>
+    </div>
+
+    <div class="personnes-config">
+      <h2 class="section-titre">Qui remplit ?</h2>
+      <div id="personnes-liste" class="personnes-liste"></div>
+      <button class="btn btn-petit" id="btn-ajouter-personne">+ Ajouter une personne</button>
+    </div>
+
+    <h2 class="section-titre">Les modules</h2>
+    <div id="modules-grid" class="modules-grid"></div>
+
+    <div style="text-align: center; margin-top: 32px;">
+      <button class="btn btn-rouge" id="btn-bilan">Voir le bilan global →</button>
+    </div>
+
+  </div>
+
+  <!-- MODULE -->
+  <div id="module-page" class="module-page"></div>
+
+  <!-- BILAN -->
+  <div id="bilan-page" class="bilan-page"></div>
+
+  <footer class="footer">
+    <div class="footer-credits">
+      Conçu par Arthur Guillieux, psychologue clinicien — V2.1 (étape 2) —
+      <a href="mailto:arthurguillieux@gmail.com">arthurguillieux@gmail.com</a>
+    </div>
+    <div>Construit avec Claude</div>
+  </footer>
+
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Données structurelles de l'outil "Qui s'en charge ?"
+// Modules → sous-sections → tâches
+// Chaque tâche a un id stable, un nom, un temps par défaut et une unité.
+// Le temps par défaut est purement indicatif — l'utilisateur le modifie librement.
+
+const MODULES_DATA = [
+  {
+    id: 'quotidien',
+    name: 'Quotidien',
+    icon: 'ti-home',
+    description: 'Ménage, linge, cuisine, courses',
+    sections: [
+      {
+        name: 'Ménage',
+        tasks: [
+          { id: 'q-men-1', name: 'Ménage quotidien (cuisine, salon)', time: 30, unit: 'jour' },
+          { id: 'q-men-2', name: 'Aspirateur et serpillère', time: 60, unit: 'semaine' },
+          { id: 'q-men-3', name: 'Salle de bain à fond (douche, WC, sols)', time: 50, unit: 'semaine' },
+          { id: 'q-men-4', name: 'Nettoyage des vitres', time: 30, unit: 'mois' },
+          { id: 'q-men-5', name: 'Vider et nettoyer les poubelles', time: 5, unit: 'jour' },
+          { id: 'q-men-6', name: 'Ranger les affaires qui traînent', time: 15, unit: 'jour' },
+          { id: 'q-men-7', name: 'Trier et désencombrer régulièrement', time: 30, unit: 'mois' },
+          { id: 'q-men-8', name: 'Repérer ce qui est sale ou en désordre', time: 10, unit: 'jour' }
+        ]
+      },
+      {
+        name: 'Linge',
+        tasks: [
+          { id: 'q-lin-1', name: 'Trier le linge à laver', time: 10, unit: 'semaine' },
+          { id: 'q-lin-2', name: 'Lancer une machine', time: 5, unit: 'jour' },
+          { id: 'q-lin-3', name: 'Étendre ou sortir du sèche-linge', time: 10, unit: 'jour' },
+          { id: 'q-lin-4', name: 'Plier et ranger', time: 15, unit: 'semaine' },
+          { id: 'q-lin-5', name: 'Repassage', time: 30, unit: 'semaine' },
+          { id: 'q-lin-6', name: 'Suivre les stocks de vêtements (tailles, chaussettes manquantes)', time: 10, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Cuisine',
+        tasks: [
+          { id: 'q-cui-1', name: 'Planifier les menus de la semaine', time: 30, unit: 'semaine' },
+          { id: 'q-cui-2', name: 'Préparer le petit-déjeuner (de tous)', time: 15, unit: 'jour' },
+          { id: 'q-cui-3', name: 'Préparer le déjeuner', time: 30, unit: 'jour' },
+          { id: 'q-cui-4', name: 'Préparer le dîner', time: 45, unit: 'jour' },
+          { id: 'q-cui-5', name: 'Faire la vaisselle ou lave-vaisselle', time: 20, unit: 'jour' },
+          { id: 'q-cui-6', name: 'Ranger la cuisine après les repas', time: 10, unit: 'jour' },
+          { id: 'q-cui-7', name: 'Vérifier les stocks et dates de péremption', time: 10, unit: 'semaine' },
+          { id: 'q-cui-8', name: 'Équilibrer les repas, varier', time: 10, unit: 'semaine' }
+        ]
+      },
+      {
+        name: 'Courses',
+        tasks: [
+          { id: 'q-cour-1', name: 'Faire la liste de courses', time: 10, unit: 'semaine' },
+          { id: 'q-cour-2', name: 'Faire les courses alimentaires', time: 90, unit: 'semaine' },
+          { id: 'q-cour-3', name: 'Courses spécifiques (pharmacie, droguerie, hygiène)', time: 30, unit: 'semaine' },
+          { id: 'q-cour-4', name: 'Ranger les courses', time: 15, unit: 'semaine' },
+          { id: 'q-cour-5', name: 'Commandes en ligne et réceptions', time: 20, unit: 'semaine' },
+          { id: 'q-cour-6', name: 'Anticiper les besoins (lessive bientôt finie, etc.)', time: 10, unit: 'semaine' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'enfants',
+    name: 'Enfants & éducation',
+    icon: 'ti-baby-carriage',
+    description: 'Quotidien, scolarité, activités, suivi',
+    sections: [
+      {
+        name: 'Quotidien des enfants',
+        tasks: [
+          { id: 'e-quo-1', name: 'Lever et habiller les enfants', time: 20, unit: 'jour' },
+          { id: 'e-quo-2', name: 'Préparer le petit-déjeuner des enfants (en plus)', time: 15, unit: 'jour' },
+          { id: 'e-quo-3', name: 'Conduite à l\'école ou crèche', time: 20, unit: 'jour' },
+          { id: 'e-quo-4', name: 'Récupération école ou crèche', time: 20, unit: 'jour' },
+          { id: 'e-quo-5', name: 'Goûter', time: 10, unit: 'jour' },
+          { id: 'e-quo-6', name: 'Bain ou douche', time: 20, unit: 'jour' },
+          { id: 'e-quo-7', name: 'Coucher (rituel, histoire)', time: 30, unit: 'jour' },
+          { id: 'e-quo-8', name: 'Lever la nuit (réveils, cauchemars, maladie)', time: 15, unit: 'jour' }
+        ]
+      },
+      {
+        name: 'Scolarité',
+        tasks: [
+          { id: 'e-sco-1', name: 'Aide aux devoirs', time: 30, unit: 'jour' },
+          { id: 'e-sco-2', name: 'Suivi des leçons et évaluations', time: 20, unit: 'semaine' },
+          { id: 'e-sco-3', name: 'Lecture du carnet de liaison et mails école', time: 10, unit: 'semaine' },
+          { id: 'e-sco-4', name: 'Communication avec les enseignants', time: 15, unit: 'semaine' },
+          { id: 'e-sco-5', name: 'Réunions parents-prof', time: 60, unit: 'mois' },
+          { id: 'e-sco-6', name: 'Préparation du cartable et des affaires d\'école', time: 10, unit: 'jour' }
+        ]
+      },
+      {
+        name: 'Vêtements et matériel',
+        tasks: [
+          { id: 'e-vet-1', name: 'Acheter les vêtements (suivre les tailles)', time: 60, unit: 'mois' },
+          { id: 'e-vet-2', name: 'Préparer les vêtements du lendemain', time: 5, unit: 'jour' },
+          { id: 'e-vet-3', name: 'Gestion des chaussures (taille, état)', time: 15, unit: 'mois' },
+          { id: 'e-vet-4', name: 'Achat du matériel scolaire', time: 90, unit: 'année' }
+        ]
+      },
+      {
+        name: 'Loisirs et activités',
+        tasks: [
+          { id: 'e-loi-1', name: 'Inscriptions aux activités extrascolaires', time: 30, unit: 'année' },
+          { id: 'e-loi-2', name: 'Conduite aux activités', time: 60, unit: 'semaine' },
+          { id: 'e-loi-3', name: 'Anniversaire des enfants (préparer, invitations, cadeaux)', time: 120, unit: 'année' },
+          { id: 'e-loi-4', name: 'Anniversaires des copains (cadeaux, RSVP)', time: 30, unit: 'mois' },
+          { id: 'e-loi-5', name: 'Jeux et temps de qualité avec les enfants', time: 30, unit: 'jour' }
+        ]
+      },
+      {
+        name: 'Anticipation',
+        tasks: [
+          { id: 'e-ant-1', name: 'Préparer les départs en vacances avec enfants', time: 5, unit: 'mois' },
+          { id: 'e-ant-2', name: 'Penser aux vêtements de saison à anticiper', time: 10, unit: 'mois' },
+          { id: 'e-ant-3', name: 'Gérer le calendrier des enfants (RDV, sorties)', time: 15, unit: 'semaine' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'administratif',
+    name: 'Administratif & finances',
+    icon: 'ti-file-text',
+    description: 'Comptes, papiers, démarches, contrats',
+    sections: [
+      {
+        name: 'Finances',
+        tasks: [
+          { id: 'a-fin-1', name: 'Suivre les comptes et le budget', time: 30, unit: 'semaine' },
+          { id: 'a-fin-2', name: 'Régler les factures et vérifier les prélèvements', time: 15, unit: 'semaine' },
+          { id: 'a-fin-3', name: 'Épargne et placements', time: 30, unit: 'mois' },
+          { id: 'a-fin-4', name: 'Impôts (déclaration, paiement)', time: 180, unit: 'année' },
+          { id: 'a-fin-5', name: 'Suivi des contrats (énergie, internet, téléphonie)', time: 20, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Administratif',
+        tasks: [
+          { id: 'a-adm-1', name: 'Courrier papier et numérique administratif', time: 10, unit: 'semaine' },
+          { id: 'a-adm-2', name: 'Renouvellement des papiers (CNI, passeport, permis)', time: 60, unit: 'année' },
+          { id: 'a-adm-3', name: 'Démarches CAF, sécu, mutuelle', time: 30, unit: 'mois' },
+          { id: 'a-adm-4', name: 'Suivi des assurances (habitation, voiture, vie)', time: 30, unit: 'mois' },
+          { id: 'a-adm-5', name: 'Gérer les abonnements (streaming, salle de sport, presse)', time: 15, unit: 'mois' },
+          { id: 'a-adm-6', name: 'Archivage et classement', time: 30, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Anticipation',
+        tasks: [
+          { id: 'a-ant-1', name: 'Penser aux échéances à venir', time: 10, unit: 'semaine' },
+          { id: 'a-ant-2', name: 'Comparer pour optimiser (assurances, énergie)', time: 60, unit: 'année' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'sante',
+    name: 'Santé',
+    icon: 'ti-stethoscope',
+    description: 'Suivi médical, soins, santé intime',
+    sections: [
+      {
+        name: 'Suivi médical du foyer',
+        tasks: [
+          { id: 's-foy-1', name: 'Prendre les RDV (généraliste, dentiste, spécialistes)', time: 15, unit: 'mois' },
+          { id: 's-foy-2', name: 'Accompagner aux RDV', time: 30, unit: 'mois' },
+          { id: 's-foy-3', name: 'Suivre les vaccinations et carnets de santé', time: 5, unit: 'mois' },
+          { id: 's-foy-4', name: 'Gérer les ordonnances et renouvellements', time: 15, unit: 'mois' },
+          { id: 's-foy-5', name: 'Suivi des médicaments (stocks, prises)', time: 10, unit: 'semaine' },
+          { id: 's-foy-6', name: 'Démarches mutuelle et sécu (remboursements)', time: 20, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Santé des enfants',
+        tasks: [
+          { id: 's-enf-1', name: 'Suivi pédiatrique', time: 60, unit: 'année' },
+          { id: 's-enf-2', name: 'Gestion des maladies courantes (médicaments, garde si malade)', time: 30, unit: 'mois' },
+          { id: 's-enf-3', name: 'Suivi orthodontie, orthophonie, autres spécialistes', time: 60, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Santé intime et reproductive',
+        tasks: [
+          { id: 's-int-1', name: 'Contraception (suivi, achat, RDV)', time: 30, unit: 'mois' },
+          { id: 's-int-2', name: 'Suivi gynécologique ou urologique', time: 60, unit: 'année' },
+          { id: 's-int-3', name: 'Gestion des règles (stocks, douleurs)', time: 5, unit: 'jour' },
+          { id: 's-int-4', name: 'Discussions sur le projet bébé ou la contraception', time: 15, unit: 'mois' },
+          { id: 's-int-5', name: 'Santé intime des enfants (puberté, éducation à la sexualité)', time: 10, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Bien-être',
+        tasks: [
+          { id: 's-bie-1', name: 'Penser à ce que chacun aille bien', time: 10, unit: 'jour' },
+          { id: 's-bie-2', name: 'Veiller au sommeil et à l\'hygiène de vie', time: 10, unit: 'jour' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'relations',
+    name: 'Relations & social',
+    icon: 'ti-users',
+    description: 'Famille, amis, mémoire familiale',
+    sections: [
+      {
+        name: 'Famille élargie',
+        tasks: [
+          { id: 'r-fam-1', name: 'Maintenir le lien avec les parents et beaux-parents', time: 60, unit: 'semaine' },
+          { id: 'r-fam-2', name: 'Maintenir le lien avec les frères et sœurs', time: 30, unit: 'semaine' },
+          { id: 'r-fam-3', name: 'Maintenir le lien avec la famille élargie', time: 30, unit: 'mois' },
+          { id: 'r-fam-4', name: 'Penser aux anniversaires, fêtes, mariages', time: 15, unit: 'mois' },
+          { id: 'r-fam-5', name: 'Acheter ou préparer les cadeaux', time: 60, unit: 'mois' },
+          { id: 'r-fam-6', name: 'Organiser les visites et invitations familiales', time: 30, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Amis et social',
+        tasks: [
+          { id: 'r-ami-1', name: 'Maintenir le lien avec les amis (appels, messages)', time: 30, unit: 'semaine' },
+          { id: 'r-ami-2', name: 'Organiser les sorties et soirées', time: 30, unit: 'mois' },
+          { id: 'r-ami-3', name: 'Préparer les réceptions à la maison', time: 60, unit: 'mois' },
+          { id: 'r-ami-4', name: 'Suivre les nouvelles des amis', time: 10, unit: 'semaine' }
+        ]
+      },
+      {
+        name: 'Mémoire familiale',
+        tasks: [
+          { id: 'r-mem-1', name: 'Photos (prendre, trier, partager)', time: 30, unit: 'mois' },
+          { id: 'r-mem-2', name: 'Tenir un calendrier familial partagé', time: 10, unit: 'semaine' },
+          { id: 'r-mem-3', name: 'Penser aux fêtes annuelles (Noël, fête des mères/pères, etc.)', time: 60, unit: 'année' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'logement',
+    name: 'Logement & matériel',
+    icon: 'ti-tool',
+    description: 'Maison, véhicules, équipements, animaux',
+    sections: [
+      {
+        name: 'Logement',
+        tasks: [
+          { id: 'l-log-1', name: 'Petites réparations courantes', time: 30, unit: 'mois' },
+          { id: 'l-log-2', name: 'Suivre les gros travaux et artisans', time: 60, unit: 'mois' },
+          { id: 'l-log-3', name: 'Entretien des extérieurs (jardin, terrasse)', time: 60, unit: 'semaine' },
+          { id: 'l-log-4', name: 'Entretien des appareils (filtres, détartrage, etc.)', time: 30, unit: 'mois' },
+          { id: 'l-log-5', name: 'Décoration et aménagement', time: 30, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Matériel et équipements',
+        tasks: [
+          { id: 'l-mat-1', name: 'Achat de mobilier ou gros équipement', time: 60, unit: 'année' },
+          { id: 'l-mat-2', name: 'Suivi des garanties et SAV', time: 30, unit: 'mois' },
+          { id: 'l-mat-3', name: 'Désencombrer, donner, vendre', time: 60, unit: 'mois' }
+        ]
+      },
+      {
+        name: 'Véhicules',
+        tasks: [
+          { id: 'l-veh-1', name: 'Entretien courant (plein, lavage, vignette)', time: 20, unit: 'semaine' },
+          { id: 'l-veh-2', name: 'Révisions, contrôles techniques, réparations', time: 30, unit: 'mois' },
+          { id: 'l-veh-3', name: 'Assurances et papiers du véhicule', time: 20, unit: 'mois' },
+          { id: 'l-veh-4', name: 'Planification des trajets (covoiturage, organisation)', time: 10, unit: 'semaine' }
+        ]
+      },
+      {
+        name: 'Animaux',
+        tasks: [
+          { id: 'l-ani-1', name: 'Nourriture quotidienne', time: 10, unit: 'jour' },
+          { id: 'l-ani-2', name: 'Promenades et sorties', time: 45, unit: 'jour' },
+          { id: 'l-ani-3', name: 'Litière, cage, vivarium', time: 5, unit: 'jour' },
+          { id: 'l-ani-4', name: 'RDV vétérinaire et soins', time: 30, unit: 'mois' },
+          { id: 'l-ani-5', name: 'Garde pendant les vacances', time: 60, unit: 'année' },
+          { id: 'l-ani-6', name: 'Anticiper la santé animale', time: 10, unit: 'semaine' }
+        ]
+      }
+    ]
+  },
+  {
+    id: 'emotionnel',
+    name: 'Charge émotionnelle',
+    icon: 'ti-heart',
+    description: 'Vigilance affective et responsabilités relationnelles',
+    isEmotional: true,
+    sections: [
+      {
+        name: 'Objets relationnels',
+        objects: [
+          { id: 'em-1', name: 'Veiller au moral de chaque enfant (repérer si l\'un ne va pas bien)' },
+          { id: 'em-2', name: 'Veiller au moral de son partenaire (repérer, aller chercher)' },
+          { id: 'em-3', name: 'Maintenir le moral du couple (désamorcer les tensions, entretenir le lien)' },
+          { id: 'em-4', name: 'Porter l\'inquiétude sur la santé des proches' },
+          { id: 'em-5', name: 'Porter l\'inquiétude sur la scolarité et l\'avenir des enfants' },
+          { id: 'em-6', name: 'Gérer la mémoire affective familiale (conflits, alliances)' },
+          { id: 'em-7', name: 'Maintenir le lien avec la belle-famille' },
+          { id: 'em-8', name: 'Soutenir un proche en difficulté (parent, frère/sœur, ami)' },
+          { id: 'em-9', name: 'Anticiper les besoins émotionnels lors d\'événements (deuil, naissance, déménagement)' },
+          { id: 'em-10', name: 'Maintenir une atmosphère agréable à la maison' },
+          { id: 'em-11', name: 'Faire le travail de réparation après les conflits' },
+          { id: 'em-12', name: 'Penser à ce qui ferait plaisir à chacun' },
+          { id: 'em-13', name: 'Porter la mémoire des dates qui comptent affectivement' },
+          { id: 'em-14', name: 'Soutenir le partenaire dans son travail et ses ambitions' },
+          { id: 'em-15', name: 'Aider les enfants à mettre des mots sur leurs émotions' }
+        ]
+      }
+    ]
+  }
+];
+
+// Paliers de répartition
+const PALIERS = [
+  { value: 80, label: 'Toujours ou presque', short: 'Toujours' },
+  { value: 60, label: 'Souvent', short: 'Souvent' },
+  { value: 50, label: 'À parts égales', short: 'À parts égales' },
+  { value: 20, label: 'Parfois', short: 'Parfois' },
+  { value: 0, label: 'Jamais ou presque', short: 'Jamais' }
+];
+
+// Paliers d'intensité pour la charge émotionnelle
+const INTENSITES = [
+  { value: 1, label: 'Faible' },
+  { value: 2, label: 'Modérée' },
+  { value: 3, label: 'Forte' },
+  { value: 4, label: 'Écrasante' }
+];
+
+// Conversion en minutes par jour
+function toDailyMinutes(time, unit) {
+  switch(unit) {
+    case 'jour': return time;
+    case 'semaine': return time / 7;
+    case 'mois': return time / 30;
+    case 'année': return time / 365;
+    default: return time;
+  }
+}
+
+
+// Bibliothèques de propositions :
+//  - SECTION_TEMPLATES : sections-types à proposer à l'utilisateur quand il
+//    ajoute une nouvelle section dans un module existant. Filtré par module.
+//  - MODULE_TEMPLATES : modules-types à proposer quand l'utilisateur crée un
+//    module personnalisé.
+//
+// Chaque template a un nom, une description courte, et une liste de tâches
+// (ou d'objets relationnels pour les modules émotionnels). Les ids des tâches
+// sont préfixés "tpl-" et seront renommés à l'instanciation pour éviter les
+// collisions entre plusieurs utilisations d'un même template.
+
+const SECTION_TEMPLATES = {
+  // Sections supplémentaires possibles pour le module Quotidien
+  quotidien: [
+    {
+      name: 'Saisonnier',
+      description: 'Grand ménage, archivage, garde-robe',
+      tasks: [
+        { name: 'Grand ménage de printemps / automne', time: 240, unit: 'année' },
+        { name: 'Changer la garde-robe selon la saison', time: 60, unit: 'année' },
+        { name: 'Entretien des stores, rideaux', time: 60, unit: 'année' },
+        { name: 'Désencombrement annuel', time: 180, unit: 'année' },
+        { name: 'Nettoyage du barbecue / plancha', time: 30, unit: 'année' }
+      ]
+    },
+    {
+      name: 'Petits riens du quotidien',
+      description: 'Les micro-tâches souvent invisibilisées',
+      tasks: [
+        { name: 'Recharger les téléphones et appareils', time: 5, unit: 'jour' },
+        { name: 'Remplir les distributeurs (savon, papier)', time: 5, unit: 'semaine' },
+        { name: 'Vider le lave-vaisselle', time: 5, unit: 'jour' },
+        { name: 'Remettre les chaussures en ordre', time: 3, unit: 'jour' },
+        { name: 'Aérer les pièces', time: 5, unit: 'jour' }
+      ]
+    }
+  ],
+
+  // Sections supplémentaires possibles pour le module Enfants
+  enfants: [
+    {
+      name: 'Soins quotidiens spécifiques',
+      description: 'Bébé, enfant en bas âge',
+      tasks: [
+        { name: 'Changer les couches', time: 30, unit: 'jour' },
+        { name: 'Préparer biberons / repas spécifiques', time: 20, unit: 'jour' },
+        { name: 'Stériliser / nettoyer le matériel', time: 15, unit: 'jour' },
+        { name: 'Suivre les rythmes de sommeil', time: 10, unit: 'jour' },
+        { name: 'Suivre la diversification alimentaire', time: 15, unit: 'semaine' }
+      ]
+    },
+    {
+      name: 'Adolescents',
+      description: 'Suivi spécifique aux ados',
+      tasks: [
+        { name: 'Discuter des sorties, des amis', time: 20, unit: 'semaine' },
+        { name: 'Suivre les réseaux sociaux et écrans', time: 15, unit: 'semaine' },
+        { name: 'Aborder la sexualité, la contraception', time: 30, unit: 'mois' },
+        { name: 'Gérer les conflits, les disputes', time: 30, unit: 'semaine' },
+        { name: 'Encadrer les sorties / horaires', time: 15, unit: 'semaine' }
+      ]
+    },
+    {
+      name: 'Garde alternée et coparentalité',
+      description: 'Coordination avec l\'autre parent',
+      tasks: [
+        { name: 'Préparer les valises de transition', time: 30, unit: 'semaine' },
+        { name: 'Communiquer avec l\'autre parent (logistique)', time: 30, unit: 'semaine' },
+        { name: 'Coordonner les RDV et activités', time: 20, unit: 'semaine' },
+        { name: 'Gérer les transmissions (santé, école)', time: 10, unit: 'semaine' },
+        { name: 'Adapter les rythmes au retour', time: 30, unit: 'semaine' }
+      ]
+    }
+  ],
+
+  // Sections supplémentaires possibles pour Administratif
+  administratif: [
+    {
+      name: 'Logement et immobilier',
+      description: 'Bail, propriété, syndic',
+      tasks: [
+        { name: 'Démarches avec le bailleur ou syndic', time: 30, unit: 'mois' },
+        { name: 'Suivi du bail, états des lieux', time: 60, unit: 'année' },
+        { name: 'Taxe foncière, taxe d\'habitation', time: 30, unit: 'année' },
+        { name: 'Démarches en cas de déménagement', time: 240, unit: 'année' }
+      ]
+    },
+    {
+      name: 'Décès et succession',
+      description: 'Si concerné',
+      tasks: [
+        { name: 'Démarches de succession', time: 120, unit: 'mois' },
+        { name: 'Suivi notarial', time: 60, unit: 'mois' },
+        { name: 'Gestion du deuil administratif', time: 60, unit: 'mois' }
+      ]
+    },
+    {
+      name: 'Travail et carrière',
+      description: 'Démarches liées au travail',
+      tasks: [
+        { name: 'Bulletins de paie, contrats', time: 10, unit: 'mois' },
+        { name: 'Démarches Pôle Emploi / formation', time: 30, unit: 'mois' },
+        { name: 'Suivi de la retraite', time: 20, unit: 'année' },
+        { name: 'Gestion des congés et RTT', time: 20, unit: 'mois' }
+      ]
+    }
+  ],
+
+  // Sections supplémentaires possibles pour Santé
+  sante: [
+    {
+      name: 'Suivi santé mentale',
+      description: 'Psy, thérapie, médication',
+      tasks: [
+        { name: 'RDV et suivi psy / thérapeute', time: 60, unit: 'mois' },
+        { name: 'Suivi des traitements en santé mentale', time: 15, unit: 'semaine' },
+        { name: 'Rechercher de l\'information sur les troubles', time: 30, unit: 'mois' }
+      ]
+    },
+    {
+      name: 'Handicap et maladie chronique',
+      description: 'Suivi spécifique',
+      tasks: [
+        { name: 'Suivi MDPH / dossiers handicap', time: 60, unit: 'mois' },
+        { name: 'Coordination des intervenants', time: 30, unit: 'semaine' },
+        { name: 'Adaptations du quotidien', time: 30, unit: 'semaine' },
+        { name: 'Suivi spécialiste régulier', time: 60, unit: 'mois' }
+      ]
+    },
+    {
+      name: 'Sport et activité physique',
+      description: 'Vie sportive du foyer',
+      tasks: [
+        { name: 'Organiser ses propres séances de sport', time: 30, unit: 'semaine' },
+        { name: 'Encourager le partenaire à bouger', time: 10, unit: 'semaine' },
+        { name: 'Suivi sportif des enfants', time: 30, unit: 'semaine' }
+      ]
+    }
+  ],
+
+  // Sections supplémentaires possibles pour Relations
+  relations: [
+    {
+      name: 'Voisinage',
+      description: 'Liens de proximité',
+      tasks: [
+        { name: 'Maintenir le lien avec les voisins', time: 10, unit: 'semaine' },
+        { name: 'Réunions de copropriété ou de quartier', time: 60, unit: 'mois' },
+        { name: 'Gérer les petits services entre voisins', time: 10, unit: 'mois' }
+      ]
+    },
+    {
+      name: 'Engagement associatif et politique',
+      description: 'Vie collective hors foyer',
+      tasks: [
+        { name: 'Réunions associatives ou militantes', time: 120, unit: 'mois' },
+        { name: 'Engagement bénévole', time: 60, unit: 'semaine' },
+        { name: 'Participation à des actions collectives', time: 60, unit: 'mois' }
+      ]
+    },
+    {
+      name: 'Vie spirituelle ou religieuse',
+      description: 'Si concerné',
+      tasks: [
+        { name: 'Pratique religieuse hebdomadaire', time: 60, unit: 'semaine' },
+        { name: 'Fêtes religieuses (préparer, participer)', time: 240, unit: 'année' },
+        { name: 'Transmission aux enfants', time: 30, unit: 'semaine' }
+      ]
+    }
+  ],
+
+  // Sections supplémentaires possibles pour Logement & matériel
+  logement: [
+    {
+      name: 'Travaux et rénovations',
+      description: 'Gros chantiers',
+      tasks: [
+        { name: 'Recherche d\'artisans, devis', time: 60, unit: 'mois' },
+        { name: 'Suivi quotidien des travaux', time: 60, unit: 'semaine' },
+        { name: 'Décisions de rénovation', time: 30, unit: 'mois' }
+      ]
+    },
+    {
+      name: 'Numérique et matériel tech',
+      description: 'Ordinateurs, abonnements, sauvegardes',
+      tasks: [
+        { name: 'Gérer les mots de passe et comptes', time: 15, unit: 'mois' },
+        { name: 'Sauvegardes informatiques', time: 20, unit: 'mois' },
+        { name: 'Suivi des mises à jour matériel et logiciel', time: 15, unit: 'mois' },
+        { name: 'Dépannage informatique du foyer', time: 30, unit: 'mois' }
+      ]
+    },
+    {
+      name: 'Résidence secondaire',
+      description: 'Si concerné',
+      tasks: [
+        { name: 'Entretien de la résidence secondaire', time: 240, unit: 'année' },
+        { name: 'Préparer les séjours là-bas', time: 60, unit: 'mois' },
+        { name: 'Gérer les artisans à distance', time: 30, unit: 'mois' }
+      ]
+    }
+  ],
+
+  // Sections supplémentaires pour le module émotionnel
+  emotionnel: [
+    {
+      name: 'Charge émotionnelle au travail',
+      description: 'Quand le travail déborde sur la vie commune',
+      objects: [
+        { name: 'Écouter le partenaire raconter sa journée difficile' },
+        { name: 'Soutenir lors de conflits professionnels' },
+        { name: 'Aider à préparer mentalement les semaines chargées' },
+        { name: 'Encaisser les retours d\'humeur après le travail' }
+      ]
+    },
+    {
+      name: 'Charge émotionnelle liée à la santé',
+      description: 'Quand la maladie ou l\'inquiétude pèse',
+      objects: [
+        { name: 'Porter l\'inquiétude pour la santé d\'un proche' },
+        { name: 'Soutenir au quotidien une personne malade' },
+        { name: 'Anticiper les rechutes possibles' },
+        { name: 'Maintenir une posture rassurante' }
+      ]
+    }
+  ]
+};
+
+// Modules-types proposés à la création de module personnalisé
+const MODULE_TEMPLATES = [
+  {
+    name: 'Proche aidant',
+    description: 'Accompagnement d\'un parent ou proche dépendant',
+    icon: 'ti-folder',
+    tasks: [
+      { name: 'Visites régulières au proche', time: 120, unit: 'semaine' },
+      { name: 'Appels téléphoniques pour prendre des nouvelles', time: 60, unit: 'semaine' },
+      { name: 'Coordination des intervenants à domicile (aide-soignant·e, infirmier·e)', time: 30, unit: 'semaine' },
+      { name: 'Démarches MDPH, APA, aides', time: 60, unit: 'mois' },
+      { name: 'Suivi médical du proche', time: 60, unit: 'mois' },
+      { name: 'Gestion administrative du proche', time: 60, unit: 'mois' },
+      { name: 'Penser à son moral, sa solitude', time: 30, unit: 'semaine' },
+      { name: 'Coordination familiale autour du proche', time: 30, unit: 'mois' }
+    ]
+  },
+  {
+    name: 'Famille recomposée',
+    description: 'Coordination entre foyers et fratries recomposées',
+    icon: 'ti-folder',
+    tasks: [
+      { name: 'Coordination avec l\'ex-partenaire', time: 30, unit: 'semaine' },
+      { name: 'Coordination avec la belle-famille', time: 30, unit: 'mois' },
+      { name: 'Gestion des allers-retours d\'enfants', time: 60, unit: 'semaine' },
+      { name: 'Adapter les rythmes selon la composition du foyer', time: 30, unit: 'semaine' },
+      { name: 'Suivre les liens entre demi-frères et sœurs', time: 30, unit: 'semaine' },
+      { name: 'Médiation lors des tensions de recomposition', time: 30, unit: 'mois' }
+    ]
+  },
+  {
+    name: 'Vie associative ou militante',
+    description: 'Engagement collectif hors foyer',
+    icon: 'ti-folder',
+    tasks: [
+      { name: 'Réunions de l\'association ou du collectif', time: 120, unit: 'mois' },
+      { name: 'Préparation des actions, événements', time: 240, unit: 'mois' },
+      { name: 'Coordination des autres bénévoles', time: 60, unit: 'mois' },
+      { name: 'Communication, réseaux sociaux du collectif', time: 60, unit: 'mois' },
+      { name: 'Gestion administrative (compta, démarches)', time: 60, unit: 'mois' }
+    ]
+  },
+  {
+    name: 'Auto-entreprise / activité indépendante',
+    description: 'Si l\'un·e exerce en libéral ou en auto-entrepreneur',
+    icon: 'ti-folder',
+    tasks: [
+      { name: 'Comptabilité et déclarations', time: 240, unit: 'mois' },
+      { name: 'Démarchage et relances clients', time: 120, unit: 'semaine' },
+      { name: 'Gestion administrative (URSSAF, impôts)', time: 60, unit: 'mois' },
+      { name: 'Veille professionnelle, formation continue', time: 240, unit: 'mois' }
+    ]
+  },
+  {
+    name: 'Animal de compagnie spécifique',
+    description: 'Quand un animal demande un soin particulier',
+    icon: 'ti-folder',
+    tasks: [
+      { name: 'Soins spécialisés (médicaments, traitements)', time: 15, unit: 'jour' },
+      { name: 'Préparation des repas spécifiques', time: 15, unit: 'jour' },
+      { name: 'Suivi vétérinaire renforcé', time: 60, unit: 'mois' },
+      { name: 'Adaptation du logement aux besoins de l\'animal', time: 60, unit: 'mois' },
+      { name: 'Anticiper les vacances et la garde', time: 30, unit: 'mois' }
+    ]
+  }
+];
+
+
+// =====================================================
+// BIBLIOTHÈQUE DE GRAPHIQUES SVG SUR MESURE
+// Génère des graphiques SVG inline cohérents avec l'identité
+// visuelle militante du projet (formes franches, palette du
+// projet, lisibilité prioritaire sur l'esthétique).
+//
+// Toutes les fonctions retournent une chaîne SVG.
+// =====================================================
+
+const CHART_COLORS = {
+  noir: '#1a1a1a',
+  gris: '#7a7a7a',
+  grisClair: '#d4d4d0',
+  grisTresClair: '#efece5',
+  blanc: '#ffffff',
+  rouge: '#a52a2a',
+  beige: '#f5f2ea'
+};
+
+// ---------------------------------------------------
+// Barre empilée horizontale (une ligne par personne)
+// Utilisée pour la synthèse globale + chaque module
+// ---------------------------------------------------
+//
+// data: [{ name, color, valeur, valeurAffichee }]
+//   valeur = pourcentage (0-100)
+//   valeurAffichee = string à afficher (ex: "62%")
+// width: largeur totale du SVG en px
+// height: hauteur du SVG en px
+//
+function chartBarreEmpilee(data, options = {}) {
+  const width = options.width || 600;
+  const height = options.height || 50;
+  const totalValeur = data.reduce((acc, d) => acc + (d.valeur || 0), 0);
+
+  if (totalValeur === 0) {
+    return `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+      <rect x="0" y="${height/2 - 10}" width="${width}" height="20" fill="${CHART_COLORS.grisTresClair}" />
+      <text x="${width/2}" y="${height/2 + 4}" text-anchor="middle" font-size="12" fill="${CHART_COLORS.gris}" font-style="italic">Aucune donnée</text>
+    </svg>`;
+  }
+
+  let cumul = 0;
+  const segments = data.map(d => {
+    const pct = (d.valeur / totalValeur) * 100;
+    const x = (cumul / totalValeur) * width;
+    const w = (d.valeur / totalValeur) * width;
+    cumul += d.valeur;
+    return { ...d, x, w, pct };
+  });
+
+  const labelMinWidth = 60; // ne pas afficher le label si trop étroit
+
+  const segs = segments.map(s => `
+    <rect x="${s.x}" y="${height/2 - 12}" width="${s.w}" height="24" fill="${s.color}"/>
+    ${s.w > labelMinWidth ? `
+      <text x="${s.x + s.w/2}" y="${height/2 + 5}" text-anchor="middle"
+            font-size="13" font-weight="700" fill="${CHART_COLORS.blanc}"
+            font-family="Helvetica Neue, Arial, sans-serif">
+        ${s.valeurAffichee || Math.round(s.pct) + '%'}
+      </text>` : ''}
+  `).join('');
+
+  // Labels sous la barre pour les segments trop étroits
+  const labelsEnDessous = segments
+    .filter(s => s.w <= labelMinWidth && s.pct > 0)
+    .map((s, i) => `
+      <text x="${s.x + s.w/2}" y="${height/2 + 30}" text-anchor="middle"
+            font-size="11" fill="${CHART_COLORS.gris}"
+            font-family="Helvetica Neue, Arial, sans-serif">
+        ${s.valeurAffichee || Math.round(s.pct) + '%'}
+      </text>`).join('');
+
+  return `<svg viewBox="0 0 ${width} ${height + 16}" xmlns="http://www.w3.org/2000/svg"
+               style="width: 100%; height: auto; display: block;">
+    ${segs}
+    ${labelsEnDessous}
+  </svg>`;
+}
+
+// ---------------------------------------------------
+// Barre verticale par module : 3 sous-barres
+// (exécution / mental / émotionnel) côte à côte,
+// chacune empilée par personne
+// ---------------------------------------------------
+//
+// modules: [{
+//   name: "Quotidien",
+//   dimensions: [
+//     { type: "exécution", data: [{name, color, valeur}] },
+//     { type: "mental", data: [...] },
+//     { type: "émotionnel", data: [...] }   // optionnel selon module
+//   ]
+// }]
+//
+function chartParModule(modules, options = {}) {
+  const width = options.width || 700;
+  const moduleHeight = 90;
+  const labelWidth = 160;
+  const padding = 16;
+  const barWidth = width - labelWidth - padding;
+  const subBarHeight = 18;
+  const subBarGap = 6;
+  const totalHeight = modules.length * moduleHeight + 30;
+
+  if (modules.length === 0) {
+    return `<svg viewBox="0 0 ${width} 60" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+      <text x="${width/2}" y="35" text-anchor="middle" font-size="13" fill="${CHART_COLORS.gris}" font-style="italic">
+        Aucun module avec des données pour le moment.
+      </text>
+    </svg>`;
+  }
+
+  // Légende des dimensions
+  const legendeTypes = ['exécution', 'mental', 'émotionnel'];
+
+  let content = '';
+  modules.forEach((mod, modIdx) => {
+    const yBase = modIdx * moduleHeight + 20;
+
+    // Nom du module
+    content += `<text x="0" y="${yBase + 14}" font-size="14" font-weight="700"
+                       fill="${CHART_COLORS.noir}"
+                       font-family="Georgia, serif">${escapeXml(mod.name)}</text>`;
+
+    mod.dimensions.forEach((dim, dimIdx) => {
+      const y = yBase + dimIdx * (subBarHeight + subBarGap);
+      const total = dim.data.reduce((a, d) => a + (d.valeur || 0), 0);
+
+      // Label du type de dimension
+      content += `<text x="${labelWidth - 8}" y="${y + subBarHeight/2 + 4}"
+                         text-anchor="end" font-size="11" fill="${CHART_COLORS.gris}"
+                         font-family="Helvetica Neue, Arial, sans-serif">
+                    ${escapeXml(dim.type)}
+                  </text>`;
+
+      if (total === 0) {
+        // Barre vide
+        content += `<rect x="${labelWidth}" y="${y}" width="${barWidth}" height="${subBarHeight}"
+                          fill="${CHART_COLORS.grisTresClair}"/>
+                    <text x="${labelWidth + barWidth/2}" y="${y + subBarHeight/2 + 4}"
+                          text-anchor="middle" font-size="10" fill="${CHART_COLORS.gris}"
+                          font-style="italic"
+                          font-family="Helvetica Neue, Arial, sans-serif">pas de données</text>`;
+      } else {
+        let cumul = 0;
+        dim.data.forEach(d => {
+          const x = labelWidth + (cumul / total) * barWidth;
+          const w = (d.valeur / total) * barWidth;
+          const pct = Math.round((d.valeur / total) * 100);
+          cumul += d.valeur;
+          content += `<rect x="${x}" y="${y}" width="${w}" height="${subBarHeight}" fill="${d.color}"/>`;
+          if (w > 38) {
+            content += `<text x="${x + w/2}" y="${y + subBarHeight/2 + 4}" text-anchor="middle"
+                              font-size="11" font-weight="700" fill="${CHART_COLORS.blanc}"
+                              font-family="Helvetica Neue, Arial, sans-serif">${pct}%</text>`;
+          }
+        });
+      }
+    });
+  });
+
+  return `<svg viewBox="0 0 ${width} ${totalHeight}" xmlns="http://www.w3.org/2000/svg"
+               style="width: 100%; height: auto; display: block;">
+    ${content}
+  </svg>`;
+}
+
+// ---------------------------------------------------
+// Graphique des objets relationnels par personne
+// avec intensité (1=Faible, 2=Modérée, 3=Forte, 4=Écrasante)
+// Une "bouteille" par personne, remplie selon le poids cumulé
+// ---------------------------------------------------
+//
+// personnes: [{ id, name, couleur }]
+// objets: [{ nom, repartition: {pid: pct}, intensite: 1-4 }]
+//
+function chartChargeEmotionnelle(personnes, objets, options = {}) {
+  if (objets.length === 0) {
+    return `<svg viewBox="0 0 600 60" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+      <text x="300" y="35" text-anchor="middle" font-size="13" fill="${CHART_COLORS.gris}" font-style="italic">
+        Aucun objet relationnel renseigné pour le moment.
+      </text>
+    </svg>`;
+  }
+
+  // Calcul du "poids émotionnel pondéré" par personne :
+  //   somme sur tous les objets de : (intensité * part de cette personne)
+  const poidsPondere = {};
+  personnes.forEach(p => poidsPondere[p.id] = 0);
+
+  objets.forEach(obj => {
+    const intensite = obj.intensite || 1;
+    personnes.forEach(p => {
+      const part = (obj.repartition && obj.repartition[p.id]) || 0;
+      poidsPondere[p.id] += intensite * (part / 100);
+    });
+  });
+
+  const totalPoids = personnes.reduce((a, p) => a + poidsPondere[p.id], 0);
+  const data = personnes.map(p => ({
+    name: p.name,
+    color: p.couleur,
+    valeur: poidsPondere[p.id],
+    valeurAffichee: totalPoids > 0 ? Math.round((poidsPondere[p.id] / totalPoids) * 100) + '%' : '0%'
+  }));
+
+  return chartBarreEmpilee(data, options);
+}
+
+// ---------------------------------------------------
+// Graphique de "carte de chaleur" des objets relationnels
+// Une ligne par objet, montre qui porte + intensité visuelle
+// ---------------------------------------------------
+function chartObjetsRelationnels(personnes, objets, options = {}) {
+  const width = options.width || 700;
+  const labelWidth = options.labelWidth || 280;
+  const intensiteWidth = 90;
+  const barWidth = width - labelWidth - intensiteWidth - 16;
+  const rowHeight = 26;
+  const rowGap = 4;
+  const totalHeight = objets.length * (rowHeight + rowGap) + 30;
+
+  if (objets.length === 0) {
+    return `<svg viewBox="0 0 ${width} 60" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: auto;">
+      <text x="${width/2}" y="35" text-anchor="middle" font-size="13" fill="${CHART_COLORS.gris}" font-style="italic">
+        Aucun objet relationnel renseigné.
+      </text>
+    </svg>`;
+  }
+
+  // Tri par intensité décroissante puis par déséquilibre
+  const objetsTries = [...objets].sort((a, b) => {
+    const iA = a.intensite || 0, iB = b.intensite || 0;
+    if (iA !== iB) return iB - iA;
+    // Sinon par déséquilibre (écart max - min entre les parts)
+    const valsA = personnes.map(p => (a.repartition || {})[p.id] || 0);
+    const valsB = personnes.map(p => (b.repartition || {})[p.id] || 0);
+    const ecartA = Math.max(...valsA) - Math.min(...valsA);
+    const ecartB = Math.max(...valsB) - Math.min(...valsB);
+    return ecartB - ecartA;
+  });
+
+  const intensiteLabels = { 1: 'Faible', 2: 'Modérée', 3: 'Forte', 4: 'Écrasante' };
+  const intensiteColors = { 1: '#e0d8c5', 2: '#d4a017', 3: '#c97b2e', 4: CHART_COLORS.rouge };
+
+  let content = '';
+  objetsTries.forEach((obj, idx) => {
+    const y = idx * (rowHeight + rowGap) + 4;
+
+    // Nom de l'objet (tronqué si trop long)
+    const nomCourt = obj.nom.length > 42 ? obj.nom.slice(0, 40) + '…' : obj.nom;
+    content += `<text x="0" y="${y + rowHeight/2 + 4}" font-size="12"
+                       fill="${CHART_COLORS.noir}"
+                       font-family="Helvetica Neue, Arial, sans-serif">${escapeXml(nomCourt)}</text>`;
+
+    // Pastille d'intensité
+    const intensite = obj.intensite || 0;
+    const intensiteX = labelWidth;
+    if (intensite > 0) {
+      content += `<rect x="${intensiteX}" y="${y + 4}" width="${intensiteWidth - 16}" height="${rowHeight - 8}"
+                         fill="${intensiteColors[intensite]}" rx="2"/>
+                  <text x="${intensiteX + (intensiteWidth - 16)/2}" y="${y + rowHeight/2 + 4}"
+                        text-anchor="middle" font-size="10" font-weight="700"
+                        fill="${intensite >= 3 ? CHART_COLORS.blanc : CHART_COLORS.noir}"
+                        font-family="Helvetica Neue, Arial, sans-serif">${escapeXml(intensiteLabels[intensite])}</text>`;
+    } else {
+      content += `<text x="${intensiteX + (intensiteWidth - 16)/2}" y="${y + rowHeight/2 + 4}"
+                        text-anchor="middle" font-size="10" fill="${CHART_COLORS.gris}"
+                        font-style="italic"
+                        font-family="Helvetica Neue, Arial, sans-serif">non renseignée</text>`;
+    }
+
+    // Barre de répartition
+    const total = personnes.reduce((a, p) => a + ((obj.repartition || {})[p.id] || 0), 0);
+    const barX = labelWidth + intensiteWidth;
+
+    if (total === 0) {
+      content += `<rect x="${barX}" y="${y + 6}" width="${barWidth}" height="${rowHeight - 12}"
+                        fill="${CHART_COLORS.grisTresClair}"/>
+                  <text x="${barX + barWidth/2}" y="${y + rowHeight/2 + 4}"
+                        text-anchor="middle" font-size="10" fill="${CHART_COLORS.gris}"
+                        font-style="italic"
+                        font-family="Helvetica Neue, Arial, sans-serif">non réparti</text>`;
+    } else {
+      let cumul = 0;
+      personnes.forEach(p => {
+        const part = (obj.repartition || {})[p.id] || 0;
+        if (part === 0) return;
+        const x = barX + (cumul / total) * barWidth;
+        const w = (part / total) * barWidth;
+        cumul += part;
+        content += `<rect x="${x}" y="${y + 6}" width="${w}" height="${rowHeight - 12}" fill="${p.couleur}"/>`;
+        if (w > 30) {
+          const pct = Math.round((part / total) * 100);
+          content += `<text x="${x + w/2}" y="${y + rowHeight/2 + 4}" text-anchor="middle"
+                            font-size="10" font-weight="700" fill="${CHART_COLORS.blanc}"
+                            font-family="Helvetica Neue, Arial, sans-serif">${pct}%</text>`;
+        }
+      });
+    }
+  });
+
+  return `<svg viewBox="0 0 ${width} ${totalHeight}" xmlns="http://www.w3.org/2000/svg"
+               style="width: 100%; height: auto; display: block;">
+    ${content}
+  </svg>`;
+}
+
+// ---------------------------------------------------
+// Graphique du temps quotidien par personne
+// (en heures, total cumulé activé)
+// ---------------------------------------------------
+function chartTempsQuotidien(personnes, tempsParPersonneEnMinutes, options = {}) {
+  const width = options.width || 600;
+  const padding = 16;
+  const labelWidth = 140;
+  const maxBarWidth = width - labelWidth - padding;
+  const rowHeight = 32;
+  const rowGap = 8;
+  const totalHeight = personnes.length * (rowHeight + rowGap) + 20;
+
+  // Max pour échelle
+  const maxMin = Math.max(...personnes.map(p => tempsParPersonneEnMinutes[p.id] || 0), 60);
+
+  let content = '';
+  personnes.forEach((p, idx) => {
+    const y = idx * (rowHeight + rowGap) + 8;
+    const minutes = tempsParPersonneEnMinutes[p.id] || 0;
+    const w = (minutes / maxMin) * maxBarWidth;
+
+    // Couleur pastille
+    content += `<circle cx="8" cy="${y + rowHeight/2}" r="6" fill="${p.couleur}"/>`;
+    // Nom personne
+    content += `<text x="22" y="${y + rowHeight/2 + 4}" font-size="13" font-weight="700"
+                       fill="${CHART_COLORS.noir}"
+                       font-family="Helvetica Neue, Arial, sans-serif">${escapeXml(p.name)}</text>`;
+    // Barre
+    content += `<rect x="${labelWidth}" y="${y + 4}" width="${maxBarWidth}" height="${rowHeight - 8}"
+                       fill="${CHART_COLORS.grisTresClair}"/>`;
+    content += `<rect x="${labelWidth}" y="${y + 4}" width="${w}" height="${rowHeight - 8}"
+                       fill="${p.couleur}"/>`;
+    // Texte du temps
+    const tempsTexte = formatTempsQuotidien(minutes);
+    if (w > 80) {
+      content += `<text x="${labelWidth + w - 8}" y="${y + rowHeight/2 + 4}" text-anchor="end"
+                        font-size="13" font-weight="700" fill="${CHART_COLORS.blanc}"
+                        font-family="Helvetica Neue, Arial, sans-serif">${escapeXml(tempsTexte)}</text>`;
+    } else {
+      content += `<text x="${labelWidth + w + 8}" y="${y + rowHeight/2 + 4}"
+                        font-size="13" font-weight="700" fill="${CHART_COLORS.noir}"
+                        font-family="Helvetica Neue, Arial, sans-serif">${escapeXml(tempsTexte)}</text>`;
+    }
+  });
+
+  return `<svg viewBox="0 0 ${width} ${totalHeight}" xmlns="http://www.w3.org/2000/svg"
+               style="width: 100%; height: auto; display: block;">
+    ${content}
+  </svg>`;
+}
+
+function formatTempsQuotidien(min) {
+  if (min < 1) return '<1 min';
+  if (min < 60) return Math.round(min) + ' min';
+  const h = Math.floor(min / 60);
+  const m = Math.round(min % 60);
+  return m ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
+}
+
+function escapeXml(s) {
+  if (s == null) return '';
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  })[c]);
+}
+
+
+// =====================================================
+// MOTEUR DE CALCUL DU BILAN
+// Calcule les répartitions globales et par module, et
+// génère les phrases-clés qui rendent les déséquilibres
+// lisibles pour le couple.
+// =====================================================
+
+// Calcule le bilan complet à partir de l'état
+// Retourne un objet structuré :
+// {
+//   global: {
+//     execution: { totalMinutesPerJour, parPersonne: {pid: min}, parPersonnePct: {pid: %} },
+//     mental:    { parPersonne: {...}, parPersonnePct: {...}, nbTachesAvecMental },
+//     emotionnel: { parPersonne (poids pondéré), parPersonnePct, nbObjets }
+//   },
+//   modules: [{ id, name, execution, mental, emotionnel?, nbActives, nbTotal }],
+//   objets: [{ nom, repartition, intensite }]
+//   nbActifsTotaux, nbItemsTotaux
+// }
+function calculerBilan(state, modules) {
+  const personnes = state.personnes;
+  const pIds = personnes.map(p => p.id);
+
+  // Initialisation des accumulateurs globaux
+  const globalExec = { totalMin: 0, parPersonne: zeroMap(pIds) };
+  const globalMental = { parPersonne: zeroMap(pIds), nbAvecMental: 0, nbTotal: 0 };
+  const globalEmo = { poids: zeroMap(pIds), nbObjets: 0, totalPoids: 0 };
+
+  const modulesBilan = [];
+
+  modules.forEach(module => {
+    const sections = (module.sections || []).concat(
+      (state.sectionsPerso && state.sectionsPerso[module.id]) || []
+    );
+
+    const modExec = { totalMin: 0, parPersonne: zeroMap(pIds), nbActives: 0 };
+    const modMental = { parPersonne: zeroMap(pIds), nbActives: 0 };
+    const modEmo = { poids: zeroMap(pIds), nbActives: 0, totalPoids: 0 };
+    let nbTotalItems = 0;
+
+    sections.forEach(section => {
+      const items = module.isEmotional ? (section.objects || []) : (section.tasks || []);
+      items.forEach(item => {
+        nbTotalItems++;
+        if (module.isEmotional) {
+          const saisie = state.emotionnel[item.id];
+          if (saisie && saisie.actif) {
+            modEmo.nbActives++;
+            const intensite = saisie.intensite || 1;
+            const repartition = saisie.repartition || {};
+            personnes.forEach(p => {
+              const part = (repartition[p.id] || 0) / 100;
+              const poids = intensite * part;
+              modEmo.poids[p.id] += poids;
+              modEmo.totalPoids += poids;
+              globalEmo.poids[p.id] += poids;
+            });
+            globalEmo.nbObjets++;
+            globalEmo.totalPoids += personnes.reduce((a, p) => {
+              return a + intensite * ((repartition[p.id] || 0) / 100);
+            }, 0);
+          }
+        } else {
+          const saisie = state.saisies[item.id];
+          if (saisie && saisie.actif) {
+            const time = (saisie.time != null) ? saisie.time : item.time;
+            const unit = saisie.unit || item.unit;
+            const minPerDay = toDailyMinutes(time, unit);
+
+            // EXÉCUTION
+            const execution = saisie.execution || {};
+            const sommeExec = personnes.reduce((a, p) => a + (execution[p.id] || 0), 0);
+            if (sommeExec > 0) {
+              modExec.nbActives++;
+              modExec.totalMin += minPerDay;
+              globalExec.totalMin += minPerDay;
+              personnes.forEach(p => {
+                const part = (execution[p.id] || 0) / sommeExec;
+                modExec.parPersonne[p.id] += minPerDay * part;
+                globalExec.parPersonne[p.id] += minPerDay * part;
+              });
+            } else {
+              // Activé sans répartition saisie : compte comme actif mais sans pondération
+              modExec.nbActives++;
+            }
+
+            // MENTAL (si renseigné)
+            const mental = saisie.mental || {};
+            const sommeMental = personnes.reduce((a, p) => a + (mental[p.id] || 0), 0);
+            if (sommeMental > 0) {
+              modMental.nbActives++;
+              globalMental.nbAvecMental++;
+              personnes.forEach(p => {
+                const part = (mental[p.id] || 0) / sommeMental;
+                // Pondéré par le temps quotidien (plus la tâche est lourde, plus son mental compte)
+                modMental.parPersonne[p.id] += minPerDay * part;
+                globalMental.parPersonne[p.id] += minPerDay * part;
+              });
+            }
+          }
+        }
+      });
+    });
+
+    // Pourcentages module
+    const modExecTotal = sum(modExec.parPersonne);
+    const modMentalTotal = sum(modMental.parPersonne);
+    const modEmoTotal = modEmo.totalPoids;
+
+    modulesBilan.push({
+      id: module.id,
+      name: module.name,
+      isEmotional: module.isEmotional,
+      execution: {
+        totalMin: modExec.totalMin,
+        parPersonne: modExec.parPersonne,
+        parPersonnePct: pctMap(modExec.parPersonne, modExecTotal)
+      },
+      mental: {
+        parPersonne: modMental.parPersonne,
+        parPersonnePct: pctMap(modMental.parPersonne, modMentalTotal),
+        nbActives: modMental.nbActives
+      },
+      emotionnel: module.isEmotional ? {
+        poids: modEmo.poids,
+        parPersonnePct: pctMap(modEmo.poids, modEmoTotal),
+        nbActives: modEmo.nbActives
+      } : null,
+      nbActives: module.isEmotional ? modEmo.nbActives : modExec.nbActives,
+      nbTotal: nbTotalItems
+    });
+  });
+
+  const globalExecTotal = sum(globalExec.parPersonne);
+  const globalMentalTotal = sum(globalMental.parPersonne);
+  const globalEmoTotal = sum(globalEmo.poids);
+
+  // Compteurs globaux
+  const nbActifsTotaux = modulesBilan.reduce((a, m) => a + m.nbActives, 0);
+  const nbItemsTotaux = modulesBilan.reduce((a, m) => a + m.nbTotal, 0);
+
+  return {
+    global: {
+      execution: {
+        totalMin: globalExec.totalMin,
+        parPersonne: globalExec.parPersonne,
+        parPersonnePct: pctMap(globalExec.parPersonne, globalExecTotal)
+      },
+      mental: {
+        parPersonne: globalMental.parPersonne,
+        parPersonnePct: pctMap(globalMental.parPersonne, globalMentalTotal),
+        nbAvecMental: globalMental.nbAvecMental
+      },
+      emotionnel: {
+        poids: globalEmo.poids,
+        parPersonnePct: pctMap(globalEmo.poids, globalEmoTotal),
+        nbObjets: globalEmo.nbObjets
+      }
+    },
+    modules: modulesBilan,
+    nbActifsTotaux,
+    nbItemsTotaux
+  };
+}
+
+function zeroMap(ids) {
+  const m = {};
+  ids.forEach(id => m[id] = 0);
+  return m;
+}
+
+function sum(obj) {
+  return Object.values(obj).reduce((a, b) => a + b, 0);
+}
+
+function pctMap(parPersonne, total) {
+  const out = {};
+  Object.keys(parPersonne).forEach(id => {
+    out[id] = total > 0 ? (parPersonne[id] / total) * 100 : 0;
+  });
+  return out;
+}
+
+// =====================================================
+// GÉNÉRATION DES PHRASES-CLÉS
+// Cherche les déséquilibres les plus parlants et les
+// formule en français clinique-mais-accessible.
+// =====================================================
+function genererPhrasesCles(bilan, personnes) {
+  const phrases = [];
+  if (personnes.length !== 2) {
+    // Cas multi-personnes : phrases adaptées
+    return genererPhrasesMulti(bilan, personnes);
+  }
+
+  const p1 = personnes[0], p2 = personnes[1];
+
+  // 1. Comparaison globale exécution vs mental
+  const execPctP1 = bilan.global.execution.parPersonnePct[p1.id];
+  const execPctP2 = bilan.global.execution.parPersonnePct[p2.id];
+  const mentalPctP1 = bilan.global.mental.parPersonnePct[p1.id];
+  const mentalPctP2 = bilan.global.mental.parPersonnePct[p2.id];
+  const aDuMental = bilan.global.mental.nbAvecMental > 0;
+
+  // Identifier qui porte le plus l'exécution
+  let pHaut, pBas, execPctHaut, mentalPctHaut, execPctBas, mentalPctBas;
+  if (execPctP1 >= execPctP2) {
+    pHaut = p1; pBas = p2;
+    execPctHaut = execPctP1; execPctBas = execPctP2;
+    mentalPctHaut = mentalPctP1; mentalPctBas = mentalPctP2;
+  } else {
+    pHaut = p2; pBas = p1;
+    execPctHaut = execPctP2; execPctBas = execPctP1;
+    mentalPctHaut = mentalPctP2; mentalPctBas = mentalPctP1;
+  }
+
+  // Phrase principale exécution
+  if (execPctHaut > 0) {
+    if (Math.abs(execPctHaut - 50) < 5) {
+      phrases.push({
+        type: 'equilibre',
+        texte: `L'exécution des tâches est répartie à peu près à parts égales (${Math.round(execPctHaut)}% / ${Math.round(execPctBas)}%).`
+      });
+    } else if (execPctHaut >= 70) {
+      phrases.push({
+        type: 'desequilibre_fort',
+        texte: `${pHaut.name} porte ${Math.round(execPctHaut)}% du temps d'exécution. ${pBas.name} en porte ${Math.round(execPctBas)}%.`
+      });
+    } else {
+      phrases.push({
+        type: 'desequilibre_modere',
+        texte: `${pHaut.name} porte ${Math.round(execPctHaut)}% du temps d'exécution, ${pBas.name} ${Math.round(execPctBas)}%.`
+      });
+    }
+  }
+
+  // Phrase comparaison exécution vs mental
+  if (aDuMental && mentalPctHaut > 0) {
+    // Cas : la même personne porte exécution ET mental
+    if (mentalPctHaut > execPctHaut + 5) {
+      phrases.push({
+        type: 'cumul',
+        texte: `Et la charge mentale est encore plus déséquilibrée : ${pHaut.name} en porte ${Math.round(mentalPctHaut)}% — soit ${Math.round(mentalPctHaut - execPctHaut)} points de plus que sa part d'exécution.`
+      });
+    } else if (Math.abs(mentalPctHaut - execPctHaut) <= 5) {
+      // Charge mentale proportionnelle à l'exécution
+      phrases.push({
+        type: 'proportionnel',
+        texte: `La charge mentale suit la charge d'exécution : ${pHaut.name} y est aussi à ${Math.round(mentalPctHaut)}%.`
+      });
+    } else {
+      // Inversion : celui qui exécute moins porte plus de mental, ou vice-versa
+      // Identifier qui porte le plus le mental
+      const pMental = mentalPctP1 >= mentalPctP2 ? p1 : p2;
+      const mentalPMental = Math.max(mentalPctP1, mentalPctP2);
+      const pExec = pHaut;
+      if (pMental.id !== pExec.id) {
+        phrases.push({
+          type: 'inversion',
+          texte: `À l'inverse, ${pMental.name} porte ${Math.round(mentalPMental)}% de la charge mentale, tout en ne portant que ${Math.round(execPctBas)}% du temps d'exécution.`
+        });
+      }
+    }
+  } else if (!aDuMental && bilan.nbActifsTotaux > 0) {
+    phrases.push({
+      type: 'info',
+      texte: 'La charge mentale n\'est pas encore renseignée. Passez en mode "Saisie approfondie" dans un module pour la faire apparaître.'
+    });
+  }
+
+  // Phrase sur la charge émotionnelle
+  if (bilan.global.emotionnel.nbObjets > 0) {
+    const emoP1 = bilan.global.emotionnel.parPersonnePct[p1.id];
+    const emoP2 = bilan.global.emotionnel.parPersonnePct[p2.id];
+    const pEmo = emoP1 >= emoP2 ? p1 : p2;
+    const emoMax = Math.max(emoP1, emoP2);
+    if (Math.abs(emoMax - 50) < 5) {
+      phrases.push({
+        type: 'emo_equilibre',
+        texte: `La charge émotionnelle est portée à peu près à parts égales (${Math.round(emoMax)}% / ${Math.round(100 - emoMax)}%, pondérée par l'intensité).`
+      });
+    } else {
+      phrases.push({
+        type: 'emo',
+        texte: `${pEmo.name} porte ${Math.round(emoMax)}% de la charge émotionnelle (pondérée par l'intensité de chaque vigilance).`
+      });
+    }
+  }
+
+  // Phrase sur le module le plus déséquilibré
+  const modulesAvecData = bilan.modules.filter(m => m.execution.totalMin > 0 || (m.emotionnel && m.emotionnel.poids[p1.id] + m.emotionnel.poids[p2.id] > 0));
+  let moduleEcartMax = null;
+  let ecartMax = 0;
+  modulesAvecData.forEach(m => {
+    if (m.isEmotional) return; // traité à part
+    const pct1 = m.execution.parPersonnePct[p1.id];
+    const pct2 = m.execution.parPersonnePct[p2.id];
+    const ecart = Math.abs(pct1 - pct2);
+    if (ecart > ecartMax) { ecartMax = ecart; moduleEcartMax = m; }
+  });
+  if (moduleEcartMax && ecartMax > 25) {
+    const pctP1 = moduleEcartMax.execution.parPersonnePct[p1.id];
+    const pctP2 = moduleEcartMax.execution.parPersonnePct[p2.id];
+    const pDom = pctP1 >= pctP2 ? p1 : p2;
+    const pctDom = Math.max(pctP1, pctP2);
+    phrases.push({
+      type: 'module',
+      texte: `Le module "${moduleEcartMax.name}" présente l'écart le plus marqué : ${pDom.name} y porte ${Math.round(pctDom)}% du temps.`
+    });
+  }
+
+  // Phrase sur le volume total
+  if (bilan.global.execution.totalMin > 0) {
+    const totalH = Math.round(bilan.global.execution.totalMin / 60 * 10) / 10;
+    phrases.push({
+      type: 'volume',
+      texte: `Au total, ce sont environ ${totalH}h par jour de tâches activées qui ont été visibilisées.`
+    });
+  }
+
+  return phrases;
+}
+
+function genererPhrasesMulti(bilan, personnes) {
+  const phrases = [];
+
+  // Identifier qui porte le plus
+  let pHaut = null, maxPct = 0;
+  personnes.forEach(p => {
+    const pct = bilan.global.execution.parPersonnePct[p.id];
+    if (pct > maxPct) { maxPct = pct; pHaut = p; }
+  });
+
+  if (pHaut && maxPct > 0) {
+    if (maxPct >= 50) {
+      phrases.push({
+        type: 'desequilibre_fort',
+        texte: `${pHaut.name} porte ${Math.round(maxPct)}% du temps d'exécution à ${personnes.length} — la plus grosse part.`
+      });
+    } else {
+      phrases.push({
+        type: 'desequilibre_modere',
+        texte: `${pHaut.name} porte la plus grande part du temps d'exécution (${Math.round(maxPct)}%), suivi des autres.`
+      });
+    }
+  }
+
+  // Charge mentale
+  if (bilan.global.mental.nbAvecMental > 0) {
+    let pMental = null, maxMental = 0;
+    personnes.forEach(p => {
+      const pct = bilan.global.mental.parPersonnePct[p.id];
+      if (pct > maxMental) { maxMental = pct; pMental = p; }
+    });
+    if (pMental) {
+      phrases.push({
+        type: 'mental',
+        texte: `Pour la charge mentale, ${pMental.name} en porte ${Math.round(maxMental)}%.`
+      });
+    }
+  }
+
+  if (bilan.global.execution.totalMin > 0) {
+    const totalH = Math.round(bilan.global.execution.totalMin / 60 * 10) / 10;
+    phrases.push({
+      type: 'volume',
+      texte: `Au total, ${totalH}h par jour de tâches activées ont été visibilisées.`
+    });
+  }
+
+  return phrases;
+}
+
+
+// =====================================================
+// GÉNÉRATEUR XLSX MINIMAL (sans dépendance)
+//
+// Un fichier .xlsx est un ZIP contenant plusieurs XML.
+// Cette implémentation génère un ZIP non compressé (STORE)
+// avec les fichiers minimaux pour qu'Excel/LibreOffice ouvre :
+//   - [Content_Types].xml
+//   - _rels/.rels
+//   - xl/workbook.xml
+//   - xl/_rels/workbook.xml.rels
+//   - xl/styles.xml
+//   - xl/sharedStrings.xml
+//   - xl/worksheets/sheet1.xml, sheet2.xml, ...
+//
+// Usage :
+//   const xlsx = creerXlsx([
+//     { nom: 'Synthèse', donnees: [['A1', 'B1'], ['A2', 'B2']] },
+//     { nom: 'Détails', donnees: [...] }
+//   ]);
+//   telechargerBlob(xlsx, 'fichier.xlsx');
+// =====================================================
+
+function creerXlsx(feuilles) {
+  // Préparation du shared strings (table de chaînes uniques)
+  const sharedStrings = [];
+  const sharedStringsMap = new Map();
+
+  function indexerString(s) {
+    if (sharedStringsMap.has(s)) return sharedStringsMap.get(s);
+    const idx = sharedStrings.length;
+    sharedStrings.push(s);
+    sharedStringsMap.set(s, idx);
+    return idx;
+  }
+
+  // Génération du XML de chaque feuille
+  const feuillesXml = feuilles.map((feuille, idx) => {
+    const sheetId = idx + 1;
+    const rows = [];
+
+    feuille.donnees.forEach((ligne, rowIdx) => {
+      const r = rowIdx + 1;
+      const cells = [];
+      ligne.forEach((valeur, colIdx) => {
+        if (valeur == null || valeur === '') return;
+        const ref = celluleRef(colIdx, r);
+
+        // Détection du type
+        if (typeof valeur === 'object' && valeur.formatStyle) {
+          // Cellule stylée : { v: valeur, formatStyle: 'header'|'bold'|... }
+          const styleId = obtenirStyleId(valeur.formatStyle);
+          const v = valeur.v;
+          if (typeof v === 'number') {
+            cells.push(`<c r="${ref}" s="${styleId}"><v>${v}</v></c>`);
+          } else {
+            const sIdx = indexerString(String(v));
+            cells.push(`<c r="${ref}" s="${styleId}" t="s"><v>${sIdx}</v></c>`);
+          }
+        } else if (typeof valeur === 'number') {
+          cells.push(`<c r="${ref}"><v>${valeur}</v></c>`);
+        } else {
+          const sIdx = indexerString(String(valeur));
+          cells.push(`<c r="${ref}" t="s"><v>${sIdx}</v></c>`);
+        }
+      });
+      if (cells.length > 0) {
+        rows.push(`<row r="${r}">${cells.join('')}</row>`);
+      }
+    });
+
+    // Largeurs de colonnes (optionnel)
+    let cols = '';
+    if (feuille.largeurs && feuille.largeurs.length) {
+      cols = '<cols>' + feuille.largeurs.map((w, i) =>
+        `<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`
+      ).join('') + '</cols>';
+    }
+
+    return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+${cols}<sheetData>${rows.join('')}</sheetData></worksheet>`;
+  });
+
+  // Style sheet : quelques styles utiles
+  // 0 = défaut, 1 = bold, 2 = header (bold + fond gris), 3 = sous-titre
+  const stylesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+  <fonts count="3">
+    <font><sz val="11"/><name val="Calibri"/></font>
+    <font><sz val="11"/><b/><name val="Calibri"/></font>
+    <font><sz val="12"/><b/><name val="Calibri"/></font>
+  </fonts>
+  <fills count="3">
+    <fill><patternFill patternType="none"/></fill>
+    <fill><patternFill patternType="gray125"/></fill>
+    <fill><patternFill patternType="solid"><fgColor rgb="FFE0E0E0"/><bgColor indexed="64"/></patternFill></fill>
+  </fills>
+  <borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+  <cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+  <cellXfs count="4">
+    <xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+    <xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+    <xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/>
+    <xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0" applyFont="1"/>
+  </cellXfs>
+</styleSheet>`;
+
+  function obtenirStyleId(nom) {
+    switch (nom) {
+      case 'bold': return 1;
+      case 'header': return 2;
+      case 'titre': return 3;
+      default: return 0;
+    }
+  }
+
+  // Shared strings
+  const ssXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<sst xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" count="${sharedStrings.length}" uniqueCount="${sharedStrings.length}">
+${sharedStrings.map(s => `<si><t xml:space="preserve">${escapeXmlText(s)}</t></si>`).join('')}
+</sst>`;
+
+  // Workbook
+  const sheetsXml = feuilles.map((f, i) =>
+    `<sheet name="${escapeXmlAttr(f.nom)}" sheetId="${i+1}" r:id="rId${i+1}"/>`
+  ).join('');
+
+  const workbookXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"
+          xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheets>${sheetsXml}</sheets>
+</workbook>`;
+
+  // Relations du workbook
+  const wbRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+${feuilles.map((f, i) =>
+  `<Relationship Id="rId${i+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i+1}.xml"/>`
+).join('')}
+<Relationship Id="rId${feuilles.length+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+<Relationship Id="rId${feuilles.length+2}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings" Target="sharedStrings.xml"/>
+</Relationships>`;
+
+  // Content types
+  const contentTypesXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+${feuilles.map((f, i) =>
+  `<Override PartName="/xl/worksheets/sheet${i+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`
+).join('')}
+<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
+<Override PartName="/xl/sharedStrings.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml"/>
+</Types>`;
+
+  // Relations racine
+  const rootRelsXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`;
+
+  // Assemblage des fichiers dans le ZIP
+  const files = [
+    { name: '[Content_Types].xml', content: contentTypesXml },
+    { name: '_rels/.rels', content: rootRelsXml },
+    { name: 'xl/workbook.xml', content: workbookXml },
+    { name: 'xl/_rels/workbook.xml.rels', content: wbRelsXml },
+    { name: 'xl/styles.xml', content: stylesXml },
+    { name: 'xl/sharedStrings.xml', content: ssXml }
+  ];
+
+  feuillesXml.forEach((xml, i) => {
+    files.push({ name: `xl/worksheets/sheet${i+1}.xml`, content: xml });
+  });
+
+  // Construction du ZIP non compressé
+  return creerZipStore(files);
+}
+
+// Référence cellule type "A1" depuis index colonne (0-based) et ligne (1-based)
+function celluleRef(colIdx, rowIdx) {
+  let col = '';
+  let n = colIdx;
+  while (n >= 0) {
+    col = String.fromCharCode(65 + (n % 26)) + col;
+    n = Math.floor(n / 26) - 1;
+  }
+  return col + rowIdx;
+}
+
+function escapeXmlText(s) {
+  return String(s).replace(/[<>&'"]/g, c => ({
+    '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;'
+  })[c]);
+}
+function escapeXmlAttr(s) {
+  return escapeXmlText(s).replace(/[\r\n\t]/g, ' ');
+}
+
+// =====================================================
+// CRÉATION D'UN ZIP NON COMPRESSÉ (méthode STORE)
+// =====================================================
+function creerZipStore(files) {
+  const encoder = new TextEncoder();
+
+  // Calcul du CRC-32 (table précomputée)
+  if (!creerZipStore._crcTable) {
+    const table = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) {
+      let c = n;
+      for (let k = 0; k < 8; k++) {
+        c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1);
+      }
+      table[n] = c;
+    }
+    creerZipStore._crcTable = table;
+  }
+  const crcTable = creerZipStore._crcTable;
+
+  function crc32(bytes) {
+    let crc = 0xFFFFFFFF;
+    for (let i = 0; i < bytes.length; i++) {
+      crc = crcTable[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
+    }
+    return (crc ^ 0xFFFFFFFF) >>> 0;
+  }
+
+  // Préparation des entrées
+  const entries = files.map(f => {
+    const nameBytes = encoder.encode(f.name);
+    const contentBytes = encoder.encode(f.content);
+    const crc = crc32(contentBytes);
+    return { nameBytes, contentBytes, crc };
+  });
+
+  // Calcul de la taille totale du ZIP
+  let totalLocalSize = 0;
+  entries.forEach(e => {
+    totalLocalSize += 30 + e.nameBytes.length + e.contentBytes.length;
+  });
+  let centralDirSize = 0;
+  entries.forEach(e => {
+    centralDirSize += 46 + e.nameBytes.length;
+  });
+  const totalSize = totalLocalSize + centralDirSize + 22;
+
+  const buffer = new Uint8Array(totalSize);
+  const view = new DataView(buffer.buffer);
+  let offset = 0;
+
+  // Écriture des entrées locales
+  const localOffsets = [];
+  entries.forEach(e => {
+    localOffsets.push(offset);
+    // Local file header signature
+    view.setUint32(offset, 0x04034b50, true); offset += 4;
+    // Version needed to extract
+    view.setUint16(offset, 20, true); offset += 2;
+    // General purpose bit flag
+    view.setUint16(offset, 0, true); offset += 2;
+    // Compression method (0 = stored)
+    view.setUint16(offset, 0, true); offset += 2;
+    // File last modification time + date
+    view.setUint16(offset, 0, true); offset += 2;
+    view.setUint16(offset, 0x21, true); offset += 2; // 1980-01-01
+    // CRC-32
+    view.setUint32(offset, e.crc, true); offset += 4;
+    // Compressed size
+    view.setUint32(offset, e.contentBytes.length, true); offset += 4;
+    // Uncompressed size
+    view.setUint32(offset, e.contentBytes.length, true); offset += 4;
+    // File name length
+    view.setUint16(offset, e.nameBytes.length, true); offset += 2;
+    // Extra field length
+    view.setUint16(offset, 0, true); offset += 2;
+    // File name
+    buffer.set(e.nameBytes, offset); offset += e.nameBytes.length;
+    // File data
+    buffer.set(e.contentBytes, offset); offset += e.contentBytes.length;
+  });
+
+  // Central directory
+  const centralStart = offset;
+  entries.forEach((e, i) => {
+    // Central directory file header signature
+    view.setUint32(offset, 0x02014b50, true); offset += 4;
+    // Version made by
+    view.setUint16(offset, 20, true); offset += 2;
+    // Version needed to extract
+    view.setUint16(offset, 20, true); offset += 2;
+    // General purpose bit flag
+    view.setUint16(offset, 0, true); offset += 2;
+    // Compression method
+    view.setUint16(offset, 0, true); offset += 2;
+    // File last modification time + date
+    view.setUint16(offset, 0, true); offset += 2;
+    view.setUint16(offset, 0x21, true); offset += 2;
+    // CRC-32
+    view.setUint32(offset, e.crc, true); offset += 4;
+    // Compressed size
+    view.setUint32(offset, e.contentBytes.length, true); offset += 4;
+    // Uncompressed size
+    view.setUint32(offset, e.contentBytes.length, true); offset += 4;
+    // File name length
+    view.setUint16(offset, e.nameBytes.length, true); offset += 2;
+    // Extra field length
+    view.setUint16(offset, 0, true); offset += 2;
+    // File comment length
+    view.setUint16(offset, 0, true); offset += 2;
+    // Disk number start
+    view.setUint16(offset, 0, true); offset += 2;
+    // Internal file attributes
+    view.setUint16(offset, 0, true); offset += 2;
+    // External file attributes
+    view.setUint32(offset, 0, true); offset += 4;
+    // Relative offset of local header
+    view.setUint32(offset, localOffsets[i], true); offset += 4;
+    // File name
+    buffer.set(e.nameBytes, offset); offset += e.nameBytes.length;
+  });
+
+  // End of central directory record
+  view.setUint32(offset, 0x06054b50, true); offset += 4;
+  // Number of this disk
+  view.setUint16(offset, 0, true); offset += 2;
+  // Disk where central directory starts
+  view.setUint16(offset, 0, true); offset += 2;
+  // Number of central directory records on this disk
+  view.setUint16(offset, entries.length, true); offset += 2;
+  // Total number of central directory records
+  view.setUint16(offset, entries.length, true); offset += 2;
+  // Size of central directory
+  view.setUint32(offset, centralDirSize, true); offset += 4;
+  // Offset of start of central directory
+  view.setUint32(offset, centralStart, true); offset += 4;
+  // Comment length
+  view.setUint16(offset, 0, true); offset += 2;
+
+  return new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+}
+
+// Utilitaire de téléchargement
+function telechargerBlob(blob, nomFichier) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = nomFichier;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+
+// =====================================================
+// PRÉPARATION DES DONNÉES POUR L'EXPORT EXCEL
+// Construit les deux onglets : Synthèse et Tout-à-plat.
+// =====================================================
+
+function preparerDonneesXlsx(state, modules, bilan, phrases) {
+  const personnes = state.personnes;
+  const dateAujourdhui = new Date().toLocaleDateString('fr-FR', {
+    day: 'numeric', month: 'long', year: 'numeric'
+  });
+
+  // ---------------------------------------------
+  // ONGLET 1 : SYNTHÈSE
+  // ---------------------------------------------
+  const synthese = [];
+
+  synthese.push([{ v: 'Qui s\'en charge ?', formatStyle: 'titre' }]);
+  synthese.push([{ v: 'Rendre visible la charge mentale et la charge domestique', formatStyle: 'bold' }]);
+  synthese.push([]);
+  synthese.push([`Bilan généré le ${dateAujourdhui}`]);
+  synthese.push([`${personnes.map(p => p.name).join(' et ')}`]);
+  synthese.push([]);
+
+  // Stats globales
+  synthese.push([{ v: 'RÉPARTITION GLOBALE', formatStyle: 'titre' }]);
+  synthese.push([]);
+
+  const ligneEntete = [{ v: 'Type de charge', formatStyle: 'header' }];
+  personnes.forEach(p => ligneEntete.push({ v: p.name, formatStyle: 'header' }));
+  ligneEntete.push({ v: 'Total', formatStyle: 'header' });
+  synthese.push(ligneEntete);
+
+  // Exécution
+  const ligneExec = ['Exécution (temps quotidien)'];
+  personnes.forEach(p => {
+    const pct = Math.round(bilan.global.execution.parPersonnePct[p.id]);
+    const min = bilan.global.execution.parPersonne[p.id];
+    ligneExec.push(`${pct}% (${formatTempsXlsx(min)})`);
+  });
+  ligneExec.push(formatTempsXlsx(bilan.global.execution.totalMin) + ' / jour');
+  synthese.push(ligneExec);
+
+  // Mental
+  if (bilan.global.mental.nbAvecMental > 0) {
+    const ligneMental = ['Charge mentale (qui y pense)'];
+    personnes.forEach(p => {
+      const pct = Math.round(bilan.global.mental.parPersonnePct[p.id]);
+      ligneMental.push(`${pct}%`);
+    });
+    ligneMental.push(`${bilan.global.mental.nbAvecMental} tâches`);
+    synthese.push(ligneMental);
+  } else {
+    synthese.push(['Charge mentale', '— non renseignée —']);
+  }
+
+  // Émotionnel
+  if (bilan.global.emotionnel.nbObjets > 0) {
+    const ligneEmo = ['Charge émotionnelle (qui porte)'];
+    personnes.forEach(p => {
+      const pct = Math.round(bilan.global.emotionnel.parPersonnePct[p.id]);
+      ligneEmo.push(`${pct}%`);
+    });
+    ligneEmo.push(`${bilan.global.emotionnel.nbObjets} objets`);
+    synthese.push(ligneEmo);
+  } else {
+    synthese.push(['Charge émotionnelle', '— non renseignée —']);
+  }
+
+  synthese.push([]);
+  synthese.push([]);
+
+  // Phrases-clés
+  if (phrases.length > 0) {
+    synthese.push([{ v: 'CE QUI RESSORT', formatStyle: 'titre' }]);
+    synthese.push([]);
+    phrases.forEach(p => synthese.push([p.texte]));
+    synthese.push([]);
+    synthese.push([]);
+  }
+
+  // Détail par module
+  synthese.push([{ v: 'DÉTAIL PAR MODULE', formatStyle: 'titre' }]);
+  synthese.push([]);
+
+  const ligneEnteteMod = [{ v: 'Module', formatStyle: 'header' }, { v: 'Items activés', formatStyle: 'header' }];
+  personnes.forEach(p => ligneEnteteMod.push({ v: `${p.name} (exéc.)`, formatStyle: 'header' }));
+  if (bilan.global.mental.nbAvecMental > 0) {
+    personnes.forEach(p => ligneEnteteMod.push({ v: `${p.name} (mental)`, formatStyle: 'header' }));
+  }
+  synthese.push(ligneEnteteMod);
+
+  bilan.modules.forEach(m => {
+    if (m.nbActives === 0) return;
+    const ligne = [m.name, `${m.nbActives} / ${m.nbTotal}`];
+    if (m.isEmotional) {
+      personnes.forEach(p => {
+        const pct = Math.round(m.emotionnel.parPersonnePct[p.id]);
+        ligne.push(`${pct}% (émo.)`);
+      });
+    } else {
+      personnes.forEach(p => {
+        const pct = Math.round(m.execution.parPersonnePct[p.id]);
+        ligne.push(`${pct}%`);
+      });
+      if (bilan.global.mental.nbAvecMental > 0) {
+        personnes.forEach(p => {
+          if (m.mental.nbActives > 0) {
+            const pct = Math.round(m.mental.parPersonnePct[p.id]);
+            ligne.push(`${pct}%`);
+          } else {
+            ligne.push('—');
+          }
+        });
+      }
+    }
+    synthese.push(ligne);
+  });
+
+  synthese.push([]);
+  synthese.push([]);
+  synthese.push([{ v: `Bilan calculé sur ${bilan.nbActifsTotaux} items activés sur ${bilan.nbItemsTotaux} proposés.`, formatStyle: 'bold' }]);
+  synthese.push(['Les zones non remplies ne sont pas absentes du quotidien — elles n\'ont juste pas été visibilisées.']);
+  synthese.push(['Ces chiffres sont des tendances, pas des verdicts.']);
+
+  // ---------------------------------------------
+  // ONGLET 2 : TOUT À PLAT (fouille)
+  // ---------------------------------------------
+  const detail = [];
+
+  const enteteDetail = [
+    { v: 'Module', formatStyle: 'header' },
+    { v: 'Section', formatStyle: 'header' },
+    { v: 'Tâche / Objet', formatStyle: 'header' },
+    { v: 'Type', formatStyle: 'header' },
+    { v: 'Temps', formatStyle: 'header' },
+    { v: 'Unité', formatStyle: 'header' },
+    { v: 'Min/jour', formatStyle: 'header' }
+  ];
+  personnes.forEach(p => enteteDetail.push({ v: `${p.name} (exéc./part)`, formatStyle: 'header' }));
+  personnes.forEach(p => enteteDetail.push({ v: `${p.name} (mental)`, formatStyle: 'header' }));
+  enteteDetail.push({ v: 'Intensité émo.', formatStyle: 'header' });
+  detail.push(enteteDetail);
+
+  modules.forEach(module => {
+    const sections = (module.sections || []).concat(
+      (state.sectionsPerso && state.sectionsPerso[module.id]) || []
+    );
+    sections.forEach(section => {
+      const items = module.isEmotional ? (section.objects || []) : (section.tasks || []);
+      items.forEach(item => {
+        if (module.isEmotional) {
+          const saisie = state.emotionnel[item.id];
+          if (!saisie || !saisie.actif) return;
+          const ligne = [
+            module.name,
+            section.name,
+            saisie.name || item.name,
+            'Objet émotionnel',
+            '', '', ''  // pas de temps/unité/min-jour
+          ];
+          // Pour les objets, on met la répartition dans les colonnes "exéc"
+          // (les colonnes "mental" restent vides — un objet émo n'a qu'un axe)
+          personnes.forEach(p => {
+            const part = (saisie.repartition || {})[p.id];
+            ligne.push(part != null ? part + '%' : '');
+          });
+          // Colonnes mental : vides pour les objets
+          personnes.forEach(p => ligne.push(''));
+          // Intensité
+          const intLabels = ['', 'Faible', 'Modérée', 'Forte', 'Écrasante'];
+          ligne.push(intLabels[saisie.intensite || 0] || '');
+          detail.push(ligne);
+        } else {
+          const saisie = state.saisies[item.id];
+          if (!saisie || !saisie.actif) return;
+          const time = (saisie.time != null) ? saisie.time : item.time;
+          const unit = saisie.unit || item.unit;
+          const minPerDay = toDailyMinutes(time, unit);
+          const ligne = [
+            module.name,
+            section.name,
+            saisie.name || item.name,
+            'Tâche',
+            time,
+            unit,
+            Math.round(minPerDay * 100) / 100
+          ];
+          personnes.forEach(p => {
+            const part = (saisie.execution || {})[p.id];
+            ligne.push(part != null ? part + '%' : '');
+          });
+          personnes.forEach(p => {
+            const part = (saisie.mental || {})[p.id];
+            ligne.push(part != null ? part + '%' : '');
+          });
+          ligne.push(''); // pas d'intensité pour les tâches
+          detail.push(ligne);
+        }
+      });
+    });
+  });
+
+  return [
+    { nom: 'Synthèse', donnees: synthese, largeurs: [40, 18, 18, 18, 18, 18] },
+    { nom: 'Tout à plat', donnees: detail, largeurs: [22, 22, 38, 16, 10, 12, 12, 14, 14, 14, 14, 16] }
+  ];
+}
+
+function formatTempsXlsx(min) {
+  if (!min || min < 1) return '< 1 min';
+  if (min < 60) return Math.round(min) + ' min';
+  const h = Math.floor(min / 60);
+  const m = Math.round(min % 60);
+  return m ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
+}
+
+</script>
+
+<script>
+  // ============================================
+  // CONSTANTES
+  // ============================================
+  const COULEURS_PERSONNES = [
+    '#a52a2a', '#1e5f74', '#c97b2e',
+    '#4a6741', '#5d3b8d', '#8a6914'
+  ];
+
+  const STORAGE_KEY = 'qui_sen_charge_v2';
+
+  // ============================================
+  // ÉTAT
+  // ============================================
+  let state = {
+    personnes: [
+      { id: 'p1', name: 'Personne 1', couleur: COULEURS_PERSONNES[0] },
+      { id: 'p2', name: 'Personne 2', couleur: COULEURS_PERSONNES[1] }
+    ],
+    saisies: {},
+    emotionnel: {},
+    modulesPerso: [],
+    sectionsPerso: {},
+    modes: {},
+    sectionsRepliees: {},
+    moduleActuel: null
+  };
+
+  // ============================================
+  // PERSISTANCE
+  // ============================================
+  function persister() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (e) { console.warn('Sauvegarde locale impossible :', e); }
+  }
+
+  function recharger() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const data = JSON.parse(raw);
+      if (data && typeof data === 'object') {
+        state = Object.assign(state, data);
+        if (!state.sectionsRepliees) state.sectionsRepliees = {};
+        return true;
+      }
+    } catch (e) { console.warn('Lecture locale impossible :', e); }
+    return false;
+  }
+
+  // ============================================
+  // UTILITAIRES
+  // ============================================
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[c]);
+  }
+
+  function escapeAttr(s) {
+    return escapeHtml(s);
+  }
+
+  function showToast(message, duree = 2000) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.add('actif');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove('actif'), duree);
+  }
+
+  function getIconSVG(name) {
+    const icons = {
+      'ti-home': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg>',
+      'ti-baby-carriage': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/><path d="M4 4h3l5 11h7M3 11h11"/></svg>',
+      'ti-file-text': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 3H6v18h12V7l-4-4z"/><path d="M14 3v4h4M9 13h6M9 17h6"/></svg>',
+      'ti-stethoscope': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 4v6a4 4 0 008 0V4M16 18v-4M16 18a3 3 0 100-6 3 3 0 000 6z"/></svg>',
+      'ti-users': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="8" r="3"/><path d="M15 20c0-3 3-5 6-5"/></svg>',
+      'ti-tool': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 4l5 5-11 11-5-5L15 4zM14 5l5 5M11 8l5 5"/></svg>',
+      'ti-heart': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-4.5-9-9c-1.5-3.5 1-7 4.5-7 2 0 3.5 1 4.5 2.5 1-1.5 2.5-2.5 4.5-2.5 3.5 0 6 3.5 4.5 7-2 4.5-9 9-9 9z"/></svg>',
+      'ti-folder': '<svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7v12h18V9H12L10 7H3z"/></svg>'
+    };
+    return icons[name] || icons['ti-folder'];
+  }
+
+  function nouvelId(prefix = 'x') {
+    return prefix + '-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+  }
+
+  // ============================================
+  // RÉCUPÉRATION DES MODULES
+  // ============================================
+  function getAllModules() {
+    return MODULES_DATA.concat(state.modulesPerso);
+  }
+
+  function getModule(moduleId) {
+    return getAllModules().find(m => m.id === moduleId);
+  }
+
+  function getSectionsOfModule(module) {
+    const native = module.sections || [];
+    const perso = state.sectionsPerso[module.id] || [];
+    return native.concat(perso);
+  }
+
+  // ============================================
+  // RENDU PERSONNES
+  // ============================================
+  function renderPersonnes() {
+    const conteneur = document.getElementById('personnes-liste');
+    conteneur.innerHTML = '';
+
+    state.personnes.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'personne-item';
+      div.innerHTML = `
+        <span class="personne-couleur" style="background:${p.couleur}"></span>
+        <input type="text" class="personne-nom" value="${escapeAttr(p.name)}"
+               data-id="${p.id}" maxlength="20">
+        ${state.personnes.length > 2 ? `<button class="personne-supprimer" data-id="${p.id}" title="Retirer">✕</button>` : ''}
+      `;
+      conteneur.appendChild(div);
+    });
+
+    conteneur.querySelectorAll('.personne-nom').forEach(input => {
+      input.addEventListener('change', e => {
+        const p = state.personnes.find(p => p.id === e.target.dataset.id);
+        if (p) {
+          p.name = e.target.value.trim() || 'Sans nom';
+          persister();
+          if (state.moduleActuel) renderModule(state.moduleActuel);
+        }
+      });
+    });
+
+    conteneur.querySelectorAll('.personne-supprimer').forEach(btn => {
+      btn.addEventListener('click', e => {
+        if (state.personnes.length <= 2) return;
+        if (confirm('Retirer cette personne ? Les paliers déjà saisis pour cette personne seront perdus.')) {
+          const id = e.target.dataset.id;
+          state.personnes = state.personnes.filter(p => p.id !== id);
+          Object.values(state.saisies).forEach(s => {
+            if (s.execution) delete s.execution[id];
+            if (s.mental) delete s.mental[id];
+          });
+          Object.values(state.emotionnel).forEach(s => {
+            if (s.repartition) delete s.repartition[id];
+          });
+          persister();
+          renderPersonnes();
+          renderModulesGrid();
+        }
+      });
+    });
+  }
+
+  // ============================================
+  // RENDU GRILLE MODULES
+  // ============================================
+  function renderModulesGrid() {
+    const conteneur = document.getElementById('modules-grid');
+    conteneur.innerHTML = '';
+
+    getAllModules().forEach(module => {
+      const stats = getModuleStats(module);
+      const pourcentage = stats.total > 0 ? Math.round((stats.actives / stats.total) * 100) : 0;
+      const statutTexte = stats.actives === 0 ? 'Pas commencé' :
+                          stats.actives === stats.total ? `Tout activé — ${stats.actives} items` :
+                          `${stats.actives} / ${stats.total} items`;
+
+      const card = document.createElement('button');
+      card.className = 'module-card' + (module.isPerso ? ' personnalise' : '');
+      card.innerHTML = `
+        <div class="module-card-icon">${getIconSVG(module.icon || 'ti-folder')}</div>
+        <h3>${escapeHtml(module.name)}</h3>
+        <p class="module-card-desc">${escapeHtml(module.description || '')}</p>
+        <div class="module-card-progress">
+          <div class="module-card-progress-bar">
+            <div class="module-card-progress-fill ${pourcentage === 100 ? 'complet' : ''}"
+                 style="width: ${pourcentage}%"></div>
+          </div>
+          <div class="module-card-progress-text">${statutTexte}</div>
+        </div>
+      `;
+      card.addEventListener('click', () => ouvrirModule(module.id));
+      conteneur.appendChild(card);
+    });
+
+    const cardAdd = document.createElement('button');
+    cardAdd.className = 'ajouter-module-card';
+    cardAdd.innerHTML = `<div style="font-size: 28px; line-height: 1;">+</div>
+                         <div>Créer un module personnalisé</div>
+                         <div style="font-size: 11px; color: var(--gris);">Modèles : proche aidant, famille recomposée…</div>`;
+    cardAdd.addEventListener('click', ouvrirModalNouveauModule);
+    conteneur.appendChild(cardAdd);
+  }
+
+  function getModuleStats(module) {
+    let total = 0, actives = 0;
+    getSectionsOfModule(module).forEach(s => {
+      const items = module.isEmotional ? (s.objects || []) : (s.tasks || []);
+      items.forEach(item => {
+        total++;
+        const cible = module.isEmotional ? state.emotionnel[item.id] : state.saisies[item.id];
+        if (cible && cible.actif) actives++;
+      });
+    });
+    return { total, actives };
+  }
+
+  // ============================================
+  // OUVRIR UN MODULE
+  // ============================================
+  function ouvrirModule(moduleId) {
+    state.moduleActuel = moduleId;
+    document.getElementById('home-page').classList.add('hidden');
+    document.getElementById('bilan-page').classList.remove('active');
+    document.getElementById('module-page').classList.add('active');
+    renderModule(moduleId);
+    window.scrollTo(0, 0);
+  }
+
+  function renderModule(moduleId) {
+    const module = getModule(moduleId);
+    if (!module) return;
+    const stats = getModuleStats(module);
+    const modeActuel = state.modes[moduleId] || 'rapide';
+
+    const page = document.getElementById('module-page');
+
+    let sectionsHtml = '';
+    getSectionsOfModule(module).forEach((section, sectionIdx) => {
+      const items = module.isEmotional ? (section.objects || []) : (section.tasks || []);
+      const sectionKey = `${moduleId}::${sectionIdx}`;
+      const replie = state.sectionsRepliees[sectionKey] === true;
+      const itemsActifs = items.filter(it => {
+        const s = module.isEmotional ? state.emotionnel[it.id] : state.saisies[it.id];
+        return s && s.actif;
+      }).length;
+
+      sectionsHtml += `<div class="section-modul ${replie ? 'replie' : ''}" data-section-key="${sectionKey}">
+        <h3 class="section-modul-titre" data-action="toggle-section" data-section-key="${sectionKey}">
+          <span class="section-toggle-icon">▼</span>
+          <span>${escapeHtml(section.name)}</span>
+          <span class="section-titre-stats">${itemsActifs} / ${items.length} activées</span>
+        </h3>
+        <div class="section-content">`;
+
+      items.forEach(item => {
+        sectionsHtml += renderItem(item, module, modeActuel);
+      });
+
+      const labelBouton = module.isEmotional ? '+ Ajouter un objet relationnel' : '+ Ajouter une tâche';
+      sectionsHtml += `<div class="ajouter-tache-row">
+        <button class="btn btn-petit" data-action="ajouter-item"
+                data-module="${moduleId}" data-section-idx="${sectionIdx}">${labelBouton}</button>
+      </div>`;
+
+      sectionsHtml += `</div></div>`;
+    });
+
+    page.innerHTML = `
+      <div class="module-header">
+        <div class="breadcrumb">
+          <a id="retour-accueil">← Tous les modules</a>
+        </div>
+        <div class="module-title-row">
+          <div>
+            <h2 class="module-title">${escapeHtml(module.name)}</h2>
+            <p class="module-desc">${escapeHtml(module.description || '')}</p>
+          </div>
+          ${module.isEmotional ? '' : `
+          <div class="mode-toggle-wrapper">
+            <div class="mode-toggle">
+              <button class="${modeActuel === 'rapide' ? 'actif' : ''}" data-mode="rapide">
+                <span>Saisie rapide</span>
+                <span class="mode-sublabel">qui fait quoi ?</span>
+              </button>
+              <button class="${modeActuel === 'approfondi' ? 'actif' : ''}" data-mode="approfondi">
+                <span>Approfondie</span>
+                <span class="mode-sublabel">+ qui doit y penser ?</span>
+              </button>
+            </div>
+          </div>`}
+        </div>
+      </div>
+
+      <div class="module-stats">
+        <div class="module-stat"><strong>${stats.actives}</strong> / ${stats.total} items activés</div>
+        ${module.isEmotional ? `
+          <div class="module-stat"><em>Pour chaque objet, indiquez qui le porte et à quelle intensité.</em></div>
+        ` : `
+          <div class="module-stat"><em>Mode <strong>${modeActuel === 'rapide' ? 'rapide' : 'approfondi'}</strong> : ${modeActuel === 'rapide' ? 'qui fait, juste ça.' : 'qui fait + qui y pense (charge mentale).'}</em></div>
+        `}
+        ${state.personnes.length > 2 ? `
+          <div class="module-stat" style="color: var(--rouge);"><em>⚠ Avec plus de 2 personnes, choisissez un palier par personne (somme à 100%).</em></div>
+        ` : ''}
+      </div>
+
+      ${sectionsHtml}
+
+      <div class="ajouter-tache-row" style="margin-top: 24px;">
+        <button class="btn btn-petit" data-action="ajouter-section" data-module="${moduleId}">
+          + Ajouter une nouvelle section
+        </button>
+      </div>
+
+      <div style="margin-top: 32px; text-align: center;">
+        <button class="btn" id="btn-retour-accueil-bas">← Retour aux modules</button>
+      </div>
+    `;
+
+    page.querySelector('#retour-accueil').addEventListener('click', retourAccueil);
+    page.querySelector('#btn-retour-accueil-bas').addEventListener('click', retourAccueil);
+
+    page.querySelectorAll('.mode-toggle button').forEach(btn => {
+      btn.addEventListener('click', e => {
+        state.modes[moduleId] = e.currentTarget.dataset.mode;
+        persister();
+        renderModule(moduleId);
+      });
+    });
+
+    attacherListenersTaches(page, moduleId);
+  }
+
+  // ============================================
+  // RENDU D'UN ITEM
+  // ============================================
+  function renderItem(item, module, modeActuel) {
+    const isEmotional = module.isEmotional;
+    const stateCible = isEmotional ? state.emotionnel : state.saisies;
+    const cible = stateCible[item.id];
+    const actif = cible && cible.actif;
+
+    if (!actif) {
+      return `<div class="tache-inactive">
+        <span class="tache-nom">${escapeHtml(item.name)}</span>
+        ${isEmotional ? '' : `<span class="tache-temps">${item.time} min / ${item.unit}</span>`}
+        <div class="tache-actions">
+          <button class="btn btn-petit" data-action="activer"
+                  data-id="${item.id}" data-emotional="${isEmotional ? '1' : '0'}">Activer</button>
+        </div>
+      </div>`;
+    }
+
+    if (isEmotional) return renderObjetRelationnelActif(item, cible);
+    return renderTacheActive(item, cible, modeActuel);
+  }
+
+  function renderTacheActive(item, cible, modeActuel) {
+    const time = (cible.time != null) ? cible.time : item.time;
+    const unit = cible.unit || item.unit;
+    const dailyMin = toDailyMinutes(time, unit);
+    const execution = cible.execution || {};
+    const mental = cible.mental || {};
+    const itemName = cible.name || item.name;
+
+    return `<div class="tache-active" data-id="${item.id}">
+      <div class="tache-active-header">
+        <div class="tache-active-nom">
+          <input type="text" value="${escapeAttr(itemName)}" data-action="renommer" data-id="${item.id}" data-emotional="0">
+        </div>
+        <div class="tache-actions-mini">
+          <button class="btn btn-petit" data-action="desactiver" data-id="${item.id}" data-emotional="0">Désactiver</button>
+          ${cible.isCustom ? `<button class="btn btn-petit" data-action="supprimer" data-id="${item.id}" data-emotional="0">Supprimer</button>` : ''}
+        </div>
+      </div>
+
+      <div class="tache-temps-row">
+        <label>Temps</label>
+        <input type="number" min="0" step="1" value="${time}" data-action="time" data-id="${item.id}">
+        <span class="label-minutes">minutes</span>
+        <select data-action="unit" data-id="${item.id}">
+          <option value="jour" ${unit === 'jour' ? 'selected' : ''}>par jour</option>
+          <option value="semaine" ${unit === 'semaine' ? 'selected' : ''}>par semaine</option>
+          <option value="mois" ${unit === 'mois' ? 'selected' : ''}>par mois</option>
+          <option value="année" ${unit === 'année' ? 'selected' : ''}>par année</option>
+        </select>
+        <span class="equivalent-jour">≈ ${formatMinutes(dailyMin)} / jour</span>
+      </div>
+
+      ${renderRepartitionBloc(item.id, 'execution', execution, 'Qui exécute ?', null)}
+
+      ${modeActuel === 'approfondi' ? renderRepartitionBloc(item.id, 'mental', mental,
+          'Qui y pense, anticipe, coordonne ?',
+          'Penser à le faire et le faire sont deux choses différentes. C\'est souvent là que se cache l\'invisible.') : ''}
+    </div>`;
+  }
+
+  function renderObjetRelationnelActif(item, cible) {
+    const repartition = cible.repartition || {};
+    const intensite = cible.intensite || null;
+    const itemName = cible.name || item.name;
+
+    return `<div class="obj-rel-active" data-id="${item.id}">
+      <div class="tache-active-header">
+        <div class="tache-active-nom">
+          <input type="text" value="${escapeAttr(itemName)}" data-action="renommer" data-id="${item.id}" data-emotional="1">
+        </div>
+        <div class="tache-actions-mini">
+          <button class="btn btn-petit" data-action="desactiver" data-id="${item.id}" data-emotional="1">Désactiver</button>
+          ${cible.isCustom ? `<button class="btn btn-petit" data-action="supprimer" data-id="${item.id}" data-emotional="1">Supprimer</button>` : ''}
+        </div>
+      </div>
+
+      ${renderRepartitionBloc(item.id, 'repartition', repartition, 'Qui porte cette responsabilité ?',
+          'Pas du temps, pas une tâche : une vigilance affective continue.')}
+
+      <div class="intensite-bloc">
+        <p class="intensite-bloc-titre">À quelle intensité cette charge pèse-t-elle ?</p>
+        <div class="intensite-options">
+          ${INTENSITES.map(i => `
+            <button class="${intensite === i.value ? 'actif' : ''}"
+                    data-action="intensite" data-id="${item.id}" data-value="${i.value}">${i.label}</button>
+          `).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ============================================
+  // RENDU RÉPARTITION : choix entre curseur (2 pers) et menus (3+)
+  // ============================================
+  function renderRepartitionBloc(itemId, type, valeurs, titre, aide) {
+    return `<div class="paliers-bloc">
+      <div class="paliers-bloc-titre">${escapeHtml(titre)}</div>
+      ${aide ? `<p class="paliers-bloc-aide">${escapeHtml(aide)}</p>` : ''}
+      ${state.personnes.length === 2 ? renderCurseur(itemId, type, valeurs) : renderMenus(itemId, type, valeurs)}
+    </div>`;
+  }
+
+  // Curseur pour 2 personnes
+  function renderCurseur(itemId, type, valeurs) {
+    const p1 = state.personnes[0], p2 = state.personnes[1];
+
+    // Détermine la valeur du curseur : c'est la part de p1.
+    // Si pas encore défini, on est à 50% (neutre)
+    let valP1 = valeurs[p1.id];
+    let valP2 = valeurs[p2.id];
+    let pos = 50;
+    let defini = false;
+
+    if (valP1 != null && valP2 != null) {
+      // Si somme = 100, on prend valP1 comme position
+      pos = valP1;
+      defini = true;
+    } else if (valP1 != null) {
+      pos = valP1;
+      defini = true;
+    } else if (valP2 != null) {
+      pos = 100 - valP2;
+      defini = true;
+    }
+
+    // Encoches : 0, 20, 40, 50, 60, 80, 100
+    const encoches = [0, 20, 40, 50, 60, 80, 100];
+
+    // Boutons-paliers rapides (sous le curseur)
+    const paliersRapides = [
+      { pos: 80, label: 'Surtout ' + p1.name },
+      { pos: 60, label: 'Plutôt ' + p1.name },
+      { pos: 50, label: 'À parts égales' },
+      { pos: 40, label: 'Plutôt ' + p2.name },
+      { pos: 20, label: 'Surtout ' + p2.name }
+    ];
+
+    return `<div class="curseur-bloc" data-curseur="${itemId}::${type}">
+      <div class="curseur-labels">
+        <div class="curseur-label-personne">
+          <span class="pers-color" style="background:${p1.couleur}"></span>
+          ${escapeHtml(p1.name)}
+          <span class="pers-pct">${defini ? Math.round(pos) + '%' : '—'}</span>
+        </div>
+        <div class="curseur-label-personne">
+          <span class="pers-pct">${defini ? Math.round(100 - pos) + '%' : '—'}</span>
+          ${escapeHtml(p2.name)}
+          <span class="pers-color" style="background:${p2.couleur}"></span>
+        </div>
+      </div>
+
+      <div class="curseur-track-container">
+        <div class="curseur-track">
+          <div class="curseur-fill" style="width: ${defini ? pos : 0}%; background: ${p1.couleur};"></div>
+        </div>
+        <div class="curseur-encoches">
+          ${encoches.map(e => `<div class="curseur-encoche" style="left: ${e}%"></div>`).join('')}
+        </div>
+        <input type="range" min="0" max="100" step="1" value="${pos}"
+               class="curseur-input"
+               data-action="curseur" data-id="${itemId}" data-type="${type}">
+        ${defini ? `<div class="curseur-bulle" style="left: ${pos}%; background: ${p1.couleur};"></div>` : ''}
+      </div>
+
+      <div class="curseur-paliers-row">
+        ${paliersRapides.map(p => `
+          <button class="curseur-palier-btn ${defini && Math.abs(pos - p.pos) < 1 ? 'actif' : ''}"
+                  data-action="curseur-palier" data-id="${itemId}" data-type="${type}" data-value="${p.pos}">
+            ${escapeHtml(p.label)}
+          </button>
+        `).join('')}
+      </div>
+
+      ${defini ? `<p style="text-align: center; font-size: 13px; font-style: italic; color: var(--gris-fonce); margin-top: 12px;">
+        ${escapeHtml(phraseResume(p1.name, p2.name, pos))}
+      </p>` : `<p style="text-align: center; font-size: 12px; font-style: italic; color: var(--gris); margin-top: 12px;">
+        Glissez le curseur ou cliquez un palier pour indiquer la tendance.
+      </p>`}
+    </div>`;
+  }
+
+  function phraseResume(nom1, nom2, posP1) {
+    if (posP1 >= 90) return `Presque toujours ${nom1}`;
+    if (posP1 >= 70) return `Surtout ${nom1}`;
+    if (posP1 >= 55) return `Plutôt ${nom1}, mais ${nom2} aussi`;
+    if (posP1 >= 45) return 'À peu près à parts égales';
+    if (posP1 >= 30) return `Plutôt ${nom2}, mais ${nom1} aussi`;
+    if (posP1 >= 10) return `Surtout ${nom2}`;
+    return `Presque toujours ${nom2}`;
+  }
+
+  function libelleSelonPart(pourcent) {
+    if (pourcent >= 90) return 'presque toujours';
+    if (pourcent >= 70) return 'surtout';
+    if (pourcent >= 55) return 'plutôt';
+    if (pourcent >= 45) return 'à peu près à parts égales';
+    if (pourcent >= 30) return 'minoritairement';
+    if (pourcent >= 10) return 'rarement';
+    return 'presque jamais';
+  }
+
+  // Menus pour 3+ personnes
+  function renderMenus(itemId, type, valeurs) {
+    const somme = state.personnes.reduce((acc, p) => acc + (valeurs[p.id] != null ? valeurs[p.id] : 0), 0);
+    const tousRemplis = state.personnes.every(p => valeurs[p.id] != null);
+
+    let sommeBadge = '<span class="somme-badge">' + (tousRemplis ? somme + '%' : 'incomplet') + '</span>';
+    let suggestion = '';
+
+    if (tousRemplis) {
+      if (somme === 100) {
+        sommeBadge = `<span class="somme-badge ok">${somme}% — OK</span>`;
+      } else {
+        sommeBadge = `<span class="somme-badge attention">${somme}%</span>`;
+        const delta = 100 - somme;
+        if (delta > 0) {
+          let candidat = null, minVal = Infinity;
+          state.personnes.forEach(p => {
+            const v = valeurs[p.id] || 0;
+            if (v < minVal) { minVal = v; candidat = p; }
+          });
+          if (candidat) {
+            suggestion = `<div class="suggestion">
+              <span>Il manque ${delta}%. L'attribuer à ${escapeHtml(candidat.name)} ?</span>
+              <button data-action="ajuster" data-id="${itemId}" data-type="${type}"
+                      data-person="${candidat.id}" data-delta="${delta}">Oui</button>
+            </div>`;
+          }
+        } else {
+          let candidat = null, maxVal = -1;
+          state.personnes.forEach(p => {
+            const v = valeurs[p.id] || 0;
+            if (v > maxVal) { maxVal = v; candidat = p; }
+          });
+          if (candidat) {
+            suggestion = `<div class="suggestion">
+              <span>La somme dépasse de ${Math.abs(delta)}%. Ramener la part de ${escapeHtml(candidat.name)} ?</span>
+              <button data-action="ajuster" data-id="${itemId}" data-type="${type}"
+                      data-person="${candidat.id}" data-delta="${delta}">Oui</button>
+            </div>`;
+          }
+        }
+      }
+    }
+
+    return `<div class="paliers-grid">
+        ${state.personnes.map(p => {
+          const v = valeurs[p.id];
+          return `<div class="palier-row">
+            <span class="pers-color" style="background:${p.couleur}"></span>
+            <span class="pers-name">${escapeHtml(p.name)}</span>
+            <select data-action="palier" data-id="${itemId}" data-type="${type}" data-person="${p.id}">
+              <option value="">—</option>
+              ${PALIERS.map(pa => `<option value="${pa.value}" ${v === pa.value ? 'selected' : ''}>${pa.label} (${pa.value}%)</option>`).join('')}
+            </select>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="somme-bloc">${sommeBadge}${suggestion}</div>`;
+  }
+
+  function formatMinutes(min) {
+    if (min < 1) return Math.round(min * 60) + ' s';
+    if (min < 60) return Math.round(min * 10) / 10 + ' min';
+    const h = Math.floor(min / 60);
+    const m = Math.round(min % 60);
+    return m ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
+  }
+
+  // ============================================
+  // LISTENERS
+  // ============================================
+  function attacherListenersTaches(page, moduleId) {
+    // Toggle sections repliables
+    page.querySelectorAll('[data-action="toggle-section"]').forEach(el => {
+      el.addEventListener('click', () => {
+        const key = el.dataset.sectionKey;
+        state.sectionsRepliees[key] = !state.sectionsRepliees[key];
+        persister();
+        // Toggle visuel direct sans rerender complet
+        const section = el.closest('.section-modul');
+        section.classList.toggle('replie', state.sectionsRepliees[key]);
+      });
+    });
+
+    page.querySelectorAll('[data-action]').forEach(el => {
+      const action = el.dataset.action;
+      const id = el.dataset.id;
+
+      if (action === 'toggle-section') return; // déjà géré
+
+      if (action === 'activer') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const isEmotional = el.dataset.emotional === '1';
+          activerItem(id, isEmotional);
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'desactiver') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const isEmotional = el.dataset.emotional === '1';
+          desactiverItem(id, isEmotional);
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'supprimer') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          if (!confirm('Supprimer définitivement cet item personnalisé ?')) return;
+          const isEmotional = el.dataset.emotional === '1';
+          supprimerItemCustom(id, moduleId, isEmotional);
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'renommer') {
+        el.addEventListener('change', e => {
+          e.stopPropagation();
+          const isEmotional = el.dataset.emotional === '1';
+          const target = isEmotional ? state.emotionnel[id] : state.saisies[id];
+          if (target) {
+            target.name = el.value.trim() || 'Sans nom';
+            persister();
+          }
+        });
+        // Bloquer la propagation du click pour ne pas replier la section
+        el.addEventListener('click', e => e.stopPropagation());
+      }
+      else if (action === 'time') {
+        el.addEventListener('change', () => {
+          if (!state.saisies[id]) return;
+          state.saisies[id].time = Math.max(0, parseFloat(el.value) || 0);
+          persister();
+          renderModule(moduleId);
+        });
+        el.addEventListener('click', e => e.stopPropagation());
+      }
+      else if (action === 'unit') {
+        el.addEventListener('change', () => {
+          if (!state.saisies[id]) return;
+          state.saisies[id].unit = el.value;
+          persister();
+          renderModule(moduleId);
+        });
+        el.addEventListener('click', e => e.stopPropagation());
+      }
+      else if (action === 'curseur') {
+        el.addEventListener('input', () => {
+          const pos = parseInt(el.value, 10);
+          const type = el.dataset.type;
+          appliquerCurseur(id, type, pos, false);
+        });
+        el.addEventListener('change', () => {
+          const pos = parseInt(el.value, 10);
+          const type = el.dataset.type;
+          const snapped = snapCurseur(pos);
+          appliquerCurseur(id, type, snapped, true);
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'curseur-palier') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const pos = parseInt(el.dataset.value, 10);
+          const type = el.dataset.type;
+          appliquerCurseur(id, type, pos, true);
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'palier') {
+        el.addEventListener('change', e => {
+          e.stopPropagation();
+          const type = el.dataset.type;
+          const personId = el.dataset.person;
+          const value = el.value === '' ? null : parseInt(el.value, 10);
+          setPalierValue(id, type, personId, value);
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'ajuster') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const type = el.dataset.type;
+          const personId = el.dataset.person;
+          const delta = parseInt(el.dataset.delta, 10);
+          ajusterPalier(id, type, personId, delta);
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'intensite') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const value = parseInt(el.dataset.value, 10);
+          if (!state.emotionnel[id]) state.emotionnel[id] = { actif: true };
+          if (state.emotionnel[id].intensite === value) {
+            state.emotionnel[id].intensite = null;
+          } else {
+            state.emotionnel[id].intensite = value;
+          }
+          persister();
+          renderModule(moduleId);
+        });
+      }
+      else if (action === 'ajouter-item') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          const sectionIdx = parseInt(el.dataset.sectionIdx, 10);
+          ouvrirModalNouvelItem(moduleId, sectionIdx);
+        });
+      }
+      else if (action === 'ajouter-section') {
+        el.addEventListener('click', e => {
+          e.stopPropagation();
+          ouvrirModalNouvelleSection(moduleId);
+        });
+      }
+    });
+  }
+
+  function appliquerCurseur(itemId, type, position, persist) {
+    const p1 = state.personnes[0], p2 = state.personnes[1];
+    const cible = (type === 'repartition') ? state.emotionnel[itemId] : state.saisies[itemId];
+    if (!cible) return;
+    const champ = (type === 'repartition') ? 'repartition' : type;
+    if (!cible[champ]) cible[champ] = {};
+    cible[champ][p1.id] = position;
+    cible[champ][p2.id] = 100 - position;
+    if (persist) persister();
+  }
+
+  function snapCurseur(pos) {
+    const encoches = [0, 20, 40, 50, 60, 80, 100];
+    let proche = encoches[0];
+    let minDist = Math.abs(pos - proche);
+    encoches.forEach(e => {
+      const d = Math.abs(pos - e);
+      // Tolérance de 5% : on ne snape que si on est très proche
+      if (d < minDist && d <= 5) {
+        minDist = d; proche = e;
+      }
+    });
+    // Sinon, on garde la valeur exacte (libre)
+    return minDist <= 5 ? proche : pos;
+  }
+
+  // ============================================
+  // ACTIONS SUR ITEMS
+  // ============================================
+  function activerItem(id, isEmotional) {
+    if (isEmotional) {
+      if (!state.emotionnel[id]) state.emotionnel[id] = {};
+      state.emotionnel[id].actif = true;
+      if (!state.emotionnel[id].repartition) state.emotionnel[id].repartition = {};
+    } else {
+      if (!state.saisies[id]) {
+        const tache = trouverTacheDansData(id);
+        state.saisies[id] = tache
+          ? { time: tache.time, unit: tache.unit, execution: {}, mental: {} }
+          : { time: 0, unit: 'jour', execution: {}, mental: {} };
+      }
+      state.saisies[id].actif = true;
+      if (!state.saisies[id].execution) state.saisies[id].execution = {};
+      if (!state.saisies[id].mental) state.saisies[id].mental = {};
+    }
+    persister();
+  }
+
+  function desactiverItem(id, isEmotional) {
+    const cible = isEmotional ? state.emotionnel[id] : state.saisies[id];
+    if (cible) cible.actif = false;
+    persister();
+  }
+
+  function supprimerItemCustom(id, moduleId, isEmotional) {
+    const sections = state.sectionsPerso[moduleId] || [];
+    sections.forEach(s => {
+      if (isEmotional) s.objects = (s.objects || []).filter(o => o.id !== id);
+      else s.tasks = (s.tasks || []).filter(t => t.id !== id);
+    });
+    const modulePerso = state.modulesPerso.find(m => m.id === moduleId);
+    if (modulePerso) {
+      modulePerso.sections.forEach(s => {
+        if (isEmotional) s.objects = (s.objects || []).filter(o => o.id !== id);
+        else s.tasks = (s.tasks || []).filter(t => t.id !== id);
+      });
+    }
+    if (isEmotional) delete state.emotionnel[id];
+    else delete state.saisies[id];
+    persister();
+  }
+
+  function setPalierValue(itemId, type, personId, value) {
+    let cible;
+    if (type === 'repartition') {
+      cible = state.emotionnel[itemId];
+      if (!cible) return;
+      if (!cible.repartition) cible.repartition = {};
+      if (value === null) delete cible.repartition[personId];
+      else cible.repartition[personId] = value;
+    } else {
+      cible = state.saisies[itemId];
+      if (!cible) return;
+      if (!cible[type]) cible[type] = {};
+      if (value === null) delete cible[type][personId];
+      else cible[type][personId] = value;
+    }
+    persister();
+  }
+
+  function ajusterPalier(itemId, type, personId, delta) {
+    let cible;
+    if (type === 'repartition') {
+      cible = state.emotionnel[itemId];
+      if (!cible || !cible.repartition) return;
+      const actuel = cible.repartition[personId] || 0;
+      const nouveau = Math.max(0, Math.min(100, actuel + delta));
+      cible.repartition[personId] = snapPalier(nouveau);
+    } else {
+      cible = state.saisies[itemId];
+      if (!cible || !cible[type]) return;
+      const actuel = cible[type][personId] || 0;
+      const nouveau = Math.max(0, Math.min(100, actuel + delta));
+      cible[type][personId] = snapPalier(nouveau);
+    }
+    persister();
+  }
+
+  function snapPalier(value) {
+    let proche = PALIERS[0].value;
+    let minDist = Math.abs(value - proche);
+    PALIERS.forEach(p => {
+      const d = Math.abs(value - p.value);
+      if (d < minDist) { minDist = d; proche = p.value; }
+    });
+    return proche;
+  }
+
+  function trouverTacheDansData(id) {
+    for (const m of getAllModules()) {
+      for (const s of getSectionsOfModule(m)) {
+        for (const t of (s.tasks || [])) {
+          if (t.id === id) return t;
+        }
+      }
+    }
+    return null;
+  }
+
+  // ============================================
+  // MODALS
+  // ============================================
+  function ouvrirModalNouveauModule() {
+    let html = `
+      <h2>Créer un module personnalisé</h2>
+      <p style="font-size: 14px; color: var(--gris-fonce); margin: 0 0 16px;">
+        Choisissez un modèle pré-rempli ou créez un module vierge.
+      </p>
+      <div class="modal-section-titre">Modèles proposés</div>
+      <div class="templates-list">`;
+    MODULE_TEMPLATES.forEach((tpl, i) => {
+      html += `<button class="template-item" data-template-idx="${i}">
+        <h4>${escapeHtml(tpl.name)}</h4>
+        <p class="template-desc">${escapeHtml(tpl.description)}</p>
+        <p class="template-tasks-count">${tpl.tasks.length} tâches pré-remplies</p>
+      </button>`;
+    });
+    html += `</div>
+      <div class="modal-section-titre">Ou créer un module vierge</div>
+      <div class="modal-row">
+        <label>Nom du module</label>
+        <input type="text" id="modal-nom" maxlength="50" placeholder="Ex: Vie associative">
+      </div>
+      <div class="modal-row">
+        <label>Description courte (optionnelle)</label>
+        <input type="text" id="modal-desc" maxlength="100" placeholder="Ex: Engagements, réunions">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" data-action="annuler">Annuler</button>
+        <button class="btn btn-primary" data-action="valider">Créer un module vierge</button>
+      </div>`;
+
+    afficherModal(html, () => {
+      const nom = document.getElementById('modal-nom').value.trim();
+      const desc = document.getElementById('modal-desc').value.trim();
+      if (!nom) {
+        showToast('Le nom est obligatoire pour un module vierge.');
+        return false;
+      }
+      const moduleId = nouvelId('mod');
+      state.modulesPerso.push({
+        id: moduleId,
+        name: nom,
+        description: desc,
+        icon: 'ti-folder',
+        isPerso: true,
+        sections: [{ name: 'Tâches', tasks: [] }]
+      });
+      persister();
+      renderModulesGrid();
+      ouvrirModule(moduleId);
+      return true;
+    });
+
+    // Listeners sur les templates
+    document.querySelectorAll('.template-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const idx = parseInt(el.dataset.templateIdx, 10);
+        const tpl = MODULE_TEMPLATES[idx];
+        if (!tpl) return;
+        const moduleId = nouvelId('mod');
+        const tasks = tpl.tasks.map(t => ({
+          id: nouvelId('tsk'),
+          name: t.name,
+          time: t.time,
+          unit: t.unit
+        }));
+        state.modulesPerso.push({
+          id: moduleId,
+          name: tpl.name,
+          description: tpl.description,
+          icon: tpl.icon || 'ti-folder',
+          isPerso: true,
+          sections: [{ name: 'Tâches', tasks }]
+        });
+        persister();
+        document.getElementById('modal-overlay').classList.remove('actif');
+        renderModulesGrid();
+        ouvrirModule(moduleId);
+      });
+    });
+  }
+
+  function ouvrirModalNouvelleSection(moduleId) {
+    const module = getModule(moduleId);
+    if (!module) return;
+    const isEmotional = module.isEmotional;
+    const templates = SECTION_TEMPLATES[module.id] || [];
+
+    let html = `<h2>Ajouter une nouvelle section</h2>`;
+
+    if (templates.length > 0) {
+      html += `<p style="font-size: 14px; color: var(--gris-fonce); margin: 0 0 16px;">
+        Choisissez parmi ces propositions ou créez une section vierge.
+      </p>
+      <div class="modal-section-titre">Propositions adaptées à ce module</div>
+      <div class="templates-list">`;
+      templates.forEach((tpl, i) => {
+        const itemsCount = isEmotional ? (tpl.objects || []).length : (tpl.tasks || []).length;
+        const itemLabel = isEmotional ? 'objets relationnels' : 'tâches';
+        html += `<button class="template-item" data-section-template-idx="${i}">
+          <h4>${escapeHtml(tpl.name)}</h4>
+          <p class="template-desc">${escapeHtml(tpl.description || '')}</p>
+          <p class="template-tasks-count">${itemsCount} ${itemLabel} pré-remplis</p>
+        </button>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `<div class="modal-section-titre">Section vierge</div>
+      <div class="modal-row">
+        <label>Nom de la section</label>
+        <input type="text" id="modal-nom" maxlength="60" placeholder="Ex: Vacances">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" data-action="annuler">Annuler</button>
+        <button class="btn btn-primary" data-action="valider">Créer la section vierge</button>
+      </div>`;
+
+    afficherModal(html, () => {
+      const nom = document.getElementById('modal-nom').value.trim();
+      if (!nom) {
+        showToast('Le nom est obligatoire.');
+        return false;
+      }
+      ajouterSectionAuModule(moduleId, nom, isEmotional, null);
+      renderModule(moduleId);
+      return true;
+    });
+
+    document.querySelectorAll('[data-section-template-idx]').forEach(el => {
+      el.addEventListener('click', () => {
+        const idx = parseInt(el.dataset.sectionTemplateIdx, 10);
+        const tpl = templates[idx];
+        if (!tpl) return;
+        ajouterSectionAuModule(moduleId, tpl.name, isEmotional, tpl);
+        document.getElementById('modal-overlay').classList.remove('actif');
+        renderModule(moduleId);
+      });
+    });
+  }
+
+  function ajouterSectionAuModule(moduleId, sectionName, isEmotional, template) {
+    const module = getModule(moduleId);
+    if (!module) return;
+
+    let newSection;
+    if (template) {
+      // Réécrire les ids pour éviter les collisions
+      if (isEmotional) {
+        const objects = (template.objects || []).map(o => ({ id: nouvelId('emo'), name: o.name }));
+        newSection = { name: sectionName, objects };
+      } else {
+        const tasks = (template.tasks || []).map(t => ({
+          id: nouvelId('tsk'), name: t.name, time: t.time, unit: t.unit
+        }));
+        newSection = { name: sectionName, tasks };
+      }
+    } else {
+      newSection = isEmotional
+        ? { name: sectionName, objects: [] }
+        : { name: sectionName, tasks: [] };
+    }
+
+    if (module.isPerso) {
+      module.sections.push(newSection);
+    } else {
+      if (!state.sectionsPerso[moduleId]) state.sectionsPerso[moduleId] = [];
+      state.sectionsPerso[moduleId].push(newSection);
+    }
+    persister();
+  }
+
+  function ouvrirModalNouvelItem(moduleId, sectionIdx) {
+    const module = getModule(moduleId);
+    if (!module) return;
+    const isEmotional = module.isEmotional;
+
+    const html = `
+      <h2>${isEmotional ? 'Ajouter un objet relationnel' : 'Ajouter une tâche'}</h2>
+      <div class="modal-row">
+        <label>Nom</label>
+        <input type="text" id="modal-nom" maxlength="120" placeholder="${isEmotional ? 'Ex: Veiller au lien avec...' : 'Ex: Promener le chien'}">
+      </div>
+      ${isEmotional ? '' : `
+      <div class="modal-row">
+        <label>Temps estimé</label>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <input type="number" id="modal-time" min="0" step="1" value="10" style="flex: 0 0 100px;">
+          <span style="font-size: 13px; color: var(--gris-fonce);">minutes</span>
+          <select id="modal-unit" style="flex: 1;">
+            <option value="jour">par jour</option>
+            <option value="semaine" selected>par semaine</option>
+            <option value="mois">par mois</option>
+            <option value="année">par année</option>
+          </select>
+        </div>
+      </div>
+      `}
+      <div class="modal-actions">
+        <button class="btn" data-action="annuler">Annuler</button>
+        <button class="btn btn-primary" data-action="valider">Ajouter</button>
+      </div>
+    `;
+
+    afficherModal(html, () => {
+      const nom = document.getElementById('modal-nom').value.trim();
+      if (!nom) {
+        showToast('Le nom est obligatoire.');
+        return false;
+      }
+
+      const itemId = nouvelId(isEmotional ? 'emo' : 'tsk');
+      const sections = getSectionsOfModule(module);
+      const section = sections[sectionIdx];
+      if (!section) return false;
+
+      if (isEmotional) {
+        if (!section.objects) section.objects = [];
+        section.objects.push({ id: itemId, name: nom });
+        state.emotionnel[itemId] = { actif: true, isCustom: true, name: nom, repartition: {} };
+      } else {
+        const time = parseFloat(document.getElementById('modal-time').value) || 0;
+        const unit = document.getElementById('modal-unit').value;
+        if (!section.tasks) section.tasks = [];
+        section.tasks.push({ id: itemId, name: nom, time, unit });
+        state.saisies[itemId] = {
+          actif: true, isCustom: true, name: nom,
+          time, unit, execution: {}, mental: {}
+        };
+      }
+      persister();
+      renderModule(moduleId);
+      return true;
+    });
+  }
+
+  function afficherModal(html, onValider) {
+    const overlay = document.getElementById('modal-overlay');
+    const modal = document.getElementById('modal-content');
+    modal.innerHTML = html;
+    overlay.classList.add('actif');
+
+    const fermer = () => {
+      overlay.classList.remove('actif');
+      modal.innerHTML = '';
+    };
+
+    const btnAnnuler = modal.querySelector('[data-action="annuler"]');
+    if (btnAnnuler) btnAnnuler.addEventListener('click', fermer);
+
+    const btnValider = modal.querySelector('[data-action="valider"]');
+    if (btnValider) btnValider.addEventListener('click', () => {
+      const ok = onValider();
+      if (ok !== false) fermer();
+    });
+
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) fermer();
+    }, { once: true });
+
+    const inputNom = modal.querySelector('#modal-nom');
+    if (inputNom) {
+      inputNom.focus();
+      inputNom.addEventListener('keydown', e => {
+        if (e.key === 'Enter') {
+          const ok = onValider();
+          if (ok !== false) fermer();
+        }
+      });
+    }
+  }
+
+  function retourAccueil() {
+    state.moduleActuel = null;
+    document.getElementById('home-page').classList.remove('hidden');
+    document.getElementById('module-page').classList.remove('active');
+    renderModulesGrid();
+    window.scrollTo(0, 0);
+  }
+
+  // ============================================
+  // EXPORT / IMPORT / RESET
+  // ============================================
+  function sauvegarder() {
+    const data = { version: '2.1', date: new Date().toISOString(), ...state };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `qui-s-en-charge_${new Date().toISOString().slice(0, 10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Fichier exporté.');
+  }
+
+  function declencherReprendre() { document.getElementById('import-file').click(); }
+
+  function reprendre(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (data.personnes) state.personnes = data.personnes;
+        if (data.saisies) state.saisies = data.saisies;
+        if (data.emotionnel) state.emotionnel = data.emotionnel;
+        if (data.modulesPerso) state.modulesPerso = data.modulesPerso;
+        if (data.sectionsPerso) state.sectionsPerso = data.sectionsPerso;
+        if (data.modes) state.modes = data.modes;
+        if (data.sectionsRepliees) state.sectionsRepliees = data.sectionsRepliees;
+        persister();
+        renderPersonnes();
+        renderModulesGrid();
+        showToast('Fichier importé.');
+      } catch (err) {
+        alert('Fichier illisible : ' + err.message);
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+  }
+
+  function toutEffacer() {
+    if (!confirm('Effacer toutes vos saisies (et la sauvegarde locale) ? Cette action est définitive (sauf si vous avez exporté un fichier).')) return;
+    state = {
+      personnes: [
+        { id: 'p1', name: 'Personne 1', couleur: COULEURS_PERSONNES[0] },
+        { id: 'p2', name: 'Personne 2', couleur: COULEURS_PERSONNES[1] }
+      ],
+      saisies: {}, emotionnel: {}, modulesPerso: [],
+      sectionsPerso: {}, modes: {}, sectionsRepliees: {}, moduleActuel: null
+    };
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+    renderPersonnes();
+    renderModulesGrid();
+    document.getElementById('bilan-page').classList.remove('active');
+    document.getElementById('module-page').classList.remove('active');
+    document.getElementById('home-page').classList.remove('hidden');
+    showToast('Tout a été effacé.');
+  }
+
+  // ============================================
+  // BILAN
+  // ============================================
+  function ouvrirBilan() {
+    document.getElementById('home-page').classList.add('hidden');
+    document.getElementById('module-page').classList.remove('active');
+    document.getElementById('bilan-page').classList.add('active');
+    renderBilan();
+    window.scrollTo(0, 0);
+  }
+
+  function renderBilan() {
+    const page = document.getElementById('bilan-page');
+    const bilan = calculerBilan(state, getAllModules());
+
+    // État vide
+    if (bilan.nbActifsTotaux === 0) {
+      page.innerHTML = `
+        <div class="bilan-header">
+          <div class="breadcrumb">
+            <a id="bilan-retour-accueil">← Retour aux modules</a>
+          </div>
+          <h2 class="bilan-title">Le bilan</h2>
+        </div>
+        <div class="bilan-vide">
+          <h3>Rien à montrer pour l'instant.</h3>
+          <p>Le bilan se construit à partir des items que vous activez et renseignez dans les modules.<br>
+             Commencez par en remplir un — même partiellement — et revenez ici.</p>
+          <button class="btn btn-primary" id="bilan-retour-accueil-2">Aller aux modules</button>
+        </div>
+      `;
+      page.querySelector('#bilan-retour-accueil').addEventListener('click', retourAccueilDepuisBilan);
+      page.querySelector('#bilan-retour-accueil-2').addEventListener('click', retourAccueilDepuisBilan);
+      return;
+    }
+
+    const phrases = genererPhrasesCles(bilan, state.personnes);
+
+    // Légende personnes
+    const legendeHtml = `<div class="legende-personnes">
+      ${state.personnes.map(p => `
+        <div class="legende-item">
+          <span class="legende-pastille" style="background:${p.couleur}"></span>
+          <span>${escapeHtml(p.name)}</span>
+        </div>`).join('')}
+    </div>`;
+
+    // SYNTHÈSE GLOBALE
+    const execData = state.personnes.map(p => ({
+      name: p.name, color: p.couleur,
+      valeur: bilan.global.execution.parPersonne[p.id],
+      valeurAffichee: Math.round(bilan.global.execution.parPersonnePct[p.id]) + '%'
+    }));
+    const mentalData = state.personnes.map(p => ({
+      name: p.name, color: p.couleur,
+      valeur: bilan.global.mental.parPersonne[p.id],
+      valeurAffichee: Math.round(bilan.global.mental.parPersonnePct[p.id]) + '%'
+    }));
+    const emoData = state.personnes.map(p => ({
+      name: p.name, color: p.couleur,
+      valeur: bilan.global.emotionnel.poids[p.id],
+      valeurAffichee: Math.round(bilan.global.emotionnel.parPersonnePct[p.id]) + '%'
+    }));
+
+    const aDuMental = bilan.global.mental.nbAvecMental > 0;
+    const aDuEmo = bilan.global.emotionnel.nbObjets > 0;
+
+    const syntheseHtml = `<div class="bilan-section accent">
+      <p class="bilan-section-titre">Synthèse globale</p>
+      <h3 class="bilan-section-soustitre">Comment ça se répartit, tendance globale</h3>
+      ${legendeHtml}
+      <div class="bilan-metriques">
+
+        <div class="metrique-bloc">
+          <div class="metrique-titre">
+            <span class="metrique-nom">Charge d'exécution (qui fait)</span>
+            <span class="metrique-meta">Total visibilisé : ${formatHeureMin(bilan.global.execution.totalMin)} / jour</span>
+          </div>
+          ${chartBarreEmpilee(execData, { width: 800, height: 50 })}
+        </div>
+
+        <div class="metrique-bloc">
+          <div class="metrique-titre">
+            <span class="metrique-nom">Charge mentale (qui y pense)</span>
+            <span class="metrique-meta">${aDuMental ? bilan.global.mental.nbAvecMental + ' tâches avec mental renseigné' : 'Non renseignée — passez en saisie approfondie'}</span>
+          </div>
+          ${aDuMental
+            ? chartBarreEmpilee(mentalData, { width: 800, height: 50 })
+            : '<div style="background: var(--gris-tres-clair); padding: 12px; text-align: center; font-size: 13px; color: var(--gris-fonce); font-style: italic;">Pour faire apparaître la charge mentale, ouvrez un module et basculez en mode "Saisie approfondie".</div>'
+          }
+        </div>
+
+        <div class="metrique-bloc">
+          <div class="metrique-titre">
+            <span class="metrique-nom">Charge émotionnelle (qui porte)</span>
+            <span class="metrique-meta">${aDuEmo ? bilan.global.emotionnel.nbObjets + ' objets relationnels renseignés' : 'Non renseignée — voir le module Charge émotionnelle'}</span>
+          </div>
+          ${aDuEmo
+            ? chartBarreEmpilee(emoData, { width: 800, height: 50 })
+            : '<div style="background: var(--gris-tres-clair); padding: 12px; text-align: center; font-size: 13px; color: var(--gris-fonce); font-style: italic;">Pour la faire apparaître, activez des items dans le module "Charge émotionnelle".</div>'
+          }
+        </div>
+
+      </div>
+    </div>`;
+
+    // PHRASES-CLÉS
+    const phrasesHtml = phrases.length > 0 ? `<div class="bilan-section">
+      <p class="bilan-section-titre">Ce qui ressort</p>
+      <h3 class="bilan-section-soustitre">Lectures du bilan</h3>
+      <div class="phrases-cles">
+        ${phrases.map(p => `<div class="phrase-cle ${escapeAttr(p.type)}">${escapeHtml(p.texte)}</div>`).join('')}
+      </div>
+    </div>` : '';
+
+    // TEMPS QUOTIDIEN PAR PERSONNE
+    const tempsParPersonne = {};
+    state.personnes.forEach(p => tempsParPersonne[p.id] = bilan.global.execution.parPersonne[p.id]);
+    const tempsHtml = bilan.global.execution.totalMin > 0 ? `<div class="bilan-section">
+      <p class="bilan-section-titre">Temps quotidien d'exécution</p>
+      <h3 class="bilan-section-soustitre">Combien de temps chacun·e y consacre, par jour</h3>
+      ${chartTempsQuotidien(state.personnes, tempsParPersonne, { width: 800 })}
+      <p style="font-size: 12px; color: var(--gris-fonce); font-style: italic; margin-top: 16px; line-height: 1.5;">
+        Ces durées sont calculées à partir des temps que vous avez indiqués pour chaque tâche, ramenés au jour et répartis selon les paliers choisis. Elles donnent une tendance, pas une vérité comptable.
+      </p>
+    </div>` : '';
+
+    // BARRES EMPILÉES PAR MODULE
+    const modulesAvecData = bilan.modules.filter(m => m.nbActives > 0);
+    const dimsParModule = modulesAvecData.map(m => {
+      const dims = [];
+      if (!m.isEmotional) {
+        dims.push({
+          type: 'exécution',
+          data: state.personnes.map(p => ({ name: p.name, color: p.couleur, valeur: m.execution.parPersonne[p.id] }))
+        });
+        if (m.mental.nbActives > 0) {
+          dims.push({
+            type: 'mental',
+            data: state.personnes.map(p => ({ name: p.name, color: p.couleur, valeur: m.mental.parPersonne[p.id] }))
+          });
+        }
+      } else {
+        dims.push({
+          type: 'émotionnel',
+          data: state.personnes.map(p => ({ name: p.name, color: p.couleur, valeur: m.emotionnel.poids[p.id] }))
+        });
+      }
+      return { name: m.name, dimensions: dims };
+    });
+
+    const parModuleHtml = modulesAvecData.length > 0 ? `<div class="bilan-section">
+      <p class="bilan-section-titre">Détail par module</p>
+      <h3 class="bilan-section-soustitre">Où se logent les déséquilibres</h3>
+      ${legendeHtml}
+      ${chartParModule(dimsParModule, { width: 800 })}
+    </div>` : '';
+
+    // CHARGE ÉMOTIONNELLE DÉTAILLÉE
+    const objetsEmotionnels = [];
+    getAllModules().forEach(m => {
+      if (!m.isEmotional) return;
+      getSectionsOfModule(m).forEach(s => {
+        (s.objects || []).forEach(o => {
+          const saisie = state.emotionnel[o.id];
+          if (saisie && saisie.actif) {
+            objetsEmotionnels.push({
+              nom: saisie.name || o.name,
+              repartition: saisie.repartition || {},
+              intensite: saisie.intensite || 0
+            });
+          }
+        });
+      });
+    });
+
+    const emoDetailHtml = objetsEmotionnels.length > 0 ? `<div class="bilan-section">
+      <p class="bilan-section-titre">Charge émotionnelle, en détail</p>
+      <h3 class="bilan-section-soustitre">Qui porte quoi, à quelle intensité</h3>
+      ${legendeHtml}
+      ${chartObjetsRelationnels(state.personnes, objetsEmotionnels, { width: 800 })}
+      <p style="font-size: 12px; color: var(--gris-fonce); font-style: italic; margin-top: 16px; line-height: 1.5;">
+        Triés par intensité décroissante. Les objets les plus pesants et les plus déséquilibrés apparaissent en haut.
+      </p>
+    </div>` : '';
+
+    // NOTE DE TRANSPARENCE
+    const noteHtml = `<div class="bilan-note">
+      <strong>À garder en tête :</strong> ce bilan ne reflète que les items que vous avez
+      activés et renseignés (${bilan.nbActifsTotaux} sur ${bilan.nbItemsTotaux} proposés).
+      Les zones non remplies ne sont pas absentes de votre quotidien — elles n'ont juste pas
+      encore été visibilisées. Les chiffres sont des indicateurs de tendance, pas des vérités absolues.
+    </div>`;
+
+    // PAGE DE GARDE PDF (visible uniquement à l'impression)
+    const dateAujourdhui = new Date().toLocaleDateString('fr-FR', {
+      day: 'numeric', month: 'long', year: 'numeric'
+    });
+    const personnesHtml = state.personnes.map((p, i) => {
+      const sep = i === 0 ? '' : (i === state.personnes.length - 1 ? ' et ' : ', ');
+      return `${sep}<span class="pers-couleur" style="background:${p.couleur}"></span>${escapeHtml(p.name)}`;
+    }).join('');
+
+    const pdfCoverHtml = `<div class="pdf-cover">
+      <h1>Qui s'en charge ?</h1>
+      <p class="pdf-cover-soustitre">Rendre visible la charge mentale et la charge domestique</p>
+      <div class="pdf-cover-meta">
+        <p class="pdf-cover-personnes">${personnesHtml}</p>
+        <p class="pdf-cover-date">Bilan du ${dateAujourdhui}</p>
+      </div>
+      <p class="pdf-cover-citation">
+        «&nbsp;Ce qui n'est pas nommé n'existe pas.<br>
+        Et ce qui n'existe pas ne peut être partagé.&nbsp;»
+      </p>
+      <div class="pdf-cover-footer">
+        Conçu par Arthur Guillieux, psychologue clinicien
+      </div>
+    </div>`;
+
+    // DÉTAIL COMPLET POUR LE PDF (toutes les tâches activées)
+    const detailHtml = construireDetailPdf(bilan, state);
+
+    // BOUTONS D'EXPORT
+    const exportHtml = `<div class="bilan-export-actions" style="display: flex; gap: 12px; justify-content: center; margin: 24px 0; flex-wrap: wrap;">
+      <button class="btn" id="bilan-export-excel">
+        <span class="btn-icone">📊</span>Exporter en Excel
+      </button>
+      <button class="btn" id="bilan-export-pdf">
+        <span class="btn-icone">📄</span>Imprimer / Enregistrer en PDF
+      </button>
+    </div>`;
+
+    // ASSEMBLAGE
+    page.innerHTML = `
+      ${pdfCoverHtml}
+
+      <div class="bilan-header">
+        <div class="breadcrumb">
+          <a id="bilan-retour-accueil">← Retour aux modules</a>
+        </div>
+        <h2 class="bilan-title">Le bilan</h2>
+        <p class="bilan-soustitre">Tendances, pas verdicts.</p>
+      </div>
+
+      ${syntheseHtml}
+      ${phrasesHtml}
+      ${tempsHtml}
+      ${parModuleHtml}
+      ${emoDetailHtml}
+      ${noteHtml}
+      ${exportHtml}
+
+      ${detailHtml}
+
+      <div style="margin-top: 32px; text-align: center;">
+        <button class="btn" id="bilan-retour-accueil-bas">← Retour aux modules</button>
+      </div>
+    `;
+
+    page.querySelector('#bilan-retour-accueil').addEventListener('click', retourAccueilDepuisBilan);
+    page.querySelector('#bilan-retour-accueil-bas').addEventListener('click', retourAccueilDepuisBilan);
+    page.querySelector('#bilan-export-excel').addEventListener('click', () => exporterExcel(bilan, phrases));
+    page.querySelector('#bilan-export-pdf').addEventListener('click', exporterPdf);
+  }
+
+  function retourAccueilDepuisBilan() {
+    document.getElementById('bilan-page').classList.remove('active');
+    document.getElementById('home-page').classList.remove('hidden');
+    renderModulesGrid();
+    window.scrollTo(0, 0);
+  }
+
+  function formatHeureMin(min) {
+    if (min < 1) return '< 1 min';
+    if (min < 60) return Math.round(min) + ' min';
+    const h = Math.floor(min / 60);
+    const m = Math.round(min % 60);
+    return m ? `${h}h${String(m).padStart(2, '0')}` : `${h}h`;
+  }
+
+  // ============================================
+  // EXPORT EXCEL
+  // ============================================
+  function exporterExcel(bilan, phrases) {
+    try {
+      const feuilles = preparerDonneesXlsx(state, getAllModules(), bilan, phrases);
+      const blob = creerXlsx(feuilles);
+      const date = new Date().toISOString().slice(0, 10);
+      telechargerBlob(blob, `qui-s-en-charge_bilan_${date}.xlsx`);
+      showToast('Fichier Excel téléchargé.', 2500);
+    } catch (e) {
+      console.error(e);
+      alert('Erreur à l\'export Excel : ' + e.message);
+    }
+  }
+
+  // ============================================
+  // EXPORT PDF (via window.print)
+  // ============================================
+  function exporterPdf() {
+    showToast('Préparation de l\'aperçu d\'impression…', 1500);
+    // Petit délai pour laisser le toast apparaître avant l'ouverture de la boîte print
+    setTimeout(() => window.print(), 250);
+  }
+
+  // ============================================
+  // DÉTAIL POUR LE PDF (toutes les tâches activées)
+  // Visible uniquement à l'impression grâce à .pdf-detail-section
+  // ============================================
+  function construireDetailPdf(bilan, state) {
+    let html = '<div class="pdf-detail-section"><h2 class="bilan-title" style="margin-top: 0;">Détail des items activés</h2>';
+
+    const modules = getAllModules();
+    modules.forEach(module => {
+      const sections = getSectionsOfModule(module);
+      const itemsActifs = [];
+
+      sections.forEach(section => {
+        const items = module.isEmotional ? (section.objects || []) : (section.tasks || []);
+        items.forEach(item => {
+          const saisie = module.isEmotional ? state.emotionnel[item.id] : state.saisies[item.id];
+          if (saisie && saisie.actif) {
+            itemsActifs.push({ section: section.name, item, saisie });
+          }
+        });
+      });
+
+      if (itemsActifs.length === 0) return;
+
+      html += `<div class="bilan-section" style="page-break-inside: auto;">
+        <p class="bilan-section-titre">Module</p>
+        <h3 class="bilan-section-soustitre">${escapeHtml(module.name)}</h3>
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+          <thead>
+            <tr style="border-bottom: 1px solid var(--gris-clair);">
+              <th style="text-align: left; padding: 6px; font-weight: 700;">Section</th>
+              <th style="text-align: left; padding: 6px; font-weight: 700;">${module.isEmotional ? 'Objet relationnel' : 'Tâche'}</th>
+              ${module.isEmotional ? '' : '<th style="text-align: left; padding: 6px; font-weight: 700;">Temps</th>'}
+              ${state.personnes.map(p => `
+                <th style="text-align: right; padding: 6px; font-weight: 700;">${escapeHtml(p.name)}${module.isEmotional ? '' : ' (exéc.)'}</th>
+              `).join('')}
+              ${module.isEmotional ? '<th style="text-align: right; padding: 6px; font-weight: 700;">Intensité</th>' : ''}
+            </tr>
+          </thead>
+          <tbody>
+            ${itemsActifs.map(({ section, item, saisie }) => {
+              const nom = saisie.name || item.name;
+              if (module.isEmotional) {
+                const intLabels = ['—', 'Faible', 'Modérée', 'Forte', 'Écrasante'];
+                return `<tr style="border-bottom: 1px solid var(--gris-tres-clair);">
+                  <td style="padding: 6px; color: var(--gris-fonce);">${escapeHtml(section)}</td>
+                  <td style="padding: 6px;">${escapeHtml(nom)}</td>
+                  ${state.personnes.map(p => {
+                    const part = (saisie.repartition || {})[p.id];
+                    return `<td style="padding: 6px; text-align: right;">${part != null ? part + '%' : '—'}</td>`;
+                  }).join('')}
+                  <td style="padding: 6px; text-align: right;">${intLabels[saisie.intensite || 0]}</td>
+                </tr>`;
+              } else {
+                const time = saisie.time != null ? saisie.time : item.time;
+                const unit = saisie.unit || item.unit;
+                return `<tr style="border-bottom: 1px solid var(--gris-tres-clair);">
+                  <td style="padding: 6px; color: var(--gris-fonce);">${escapeHtml(section)}</td>
+                  <td style="padding: 6px;">${escapeHtml(nom)}</td>
+                  <td style="padding: 6px;">${time} min / ${escapeHtml(unit)}</td>
+                  ${state.personnes.map(p => {
+                    const part = (saisie.execution || {})[p.id];
+                    return `<td style="padding: 6px; text-align: right;">${part != null ? part + '%' : '—'}</td>`;
+                  }).join('')}
+                </tr>`;
+              }
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+    });
+
+    html += '</div>';
+    return html;
+  }
+
+  // ============================================
+  // SIMULATION (mode développement)
+  // Remplit l'outil avec un scénario fictif réaliste
+  // pour tester rapidement le bilan et les visuels.
+  // ============================================
+  function simuler() {
+    if (!confirm('Cette simulation va remplacer toutes vos saisies actuelles par un scénario fictif (couple hétérosexuel avec enfants, déséquilibre classique). Continuer ?')) return;
+
+    // Reset
+    state = {
+      personnes: [
+        { id: 'p1', name: 'Hugo', couleur: COULEURS_PERSONNES[0] },
+        { id: 'p2', name: 'Léa', couleur: COULEURS_PERSONNES[1] }
+      ],
+      saisies: {},
+      emotionnel: {},
+      modulesPerso: [],
+      sectionsPerso: {},
+      modes: {},
+      sectionsRepliees: {},
+      moduleActuel: null
+    };
+
+    // Scénario : Léa porte beaucoup plus
+    // p1=Hugo (porte moins), p2=Léa (porte plus)
+    // Pour chaque tâche, on défini : { activerOui/non, parts exec, parts mental }
+    // Probabilité qu'une tâche soit activée : ~75%
+    // Léa porte plus en exécution ET plus en mental (avec écart mental > exécution sur certaines)
+
+    function rand(probabilite) { return Math.random() < probabilite; }
+    function choisirPart(profile) {
+      // profile = 'lea-tres-haut', 'lea-haut', 'mixte', 'hugo-haut', 'hugo-tres-haut'
+      switch(profile) {
+        case 'lea-tres-haut': return { p1: 20, p2: 80 };
+        case 'lea-haut': return { p1: 40, p2: 60 };
+        case 'mixte': return { p1: 50, p2: 50 };
+        case 'hugo-haut': return { p1: 60, p2: 40 };
+        case 'hugo-tres-haut': return { p1: 80, p2: 20 };
+      }
+    }
+
+    // Patterns par module
+    const patternsExec = {
+      quotidien: ['lea-tres-haut', 'lea-haut', 'lea-haut', 'mixte'],
+      enfants: ['lea-haut', 'lea-tres-haut', 'lea-haut', 'mixte', 'hugo-haut'],
+      administratif: ['hugo-haut', 'mixte', 'lea-haut', 'lea-haut'],
+      sante: ['lea-tres-haut', 'lea-tres-haut', 'lea-haut'],
+      relations: ['lea-tres-haut', 'lea-haut', 'lea-haut', 'mixte'],
+      logement: ['hugo-tres-haut', 'hugo-haut', 'mixte', 'lea-haut']
+    };
+
+    // Pour le mental, on biaise encore plus vers Léa (charge mentale plus déséquilibrée que l'exec)
+    const patternsMental = {
+      quotidien: ['lea-tres-haut', 'lea-tres-haut', 'lea-haut'],
+      enfants: ['lea-tres-haut', 'lea-tres-haut', 'lea-haut'],
+      administratif: ['lea-haut', 'lea-haut', 'mixte'],
+      sante: ['lea-tres-haut', 'lea-tres-haut'],
+      relations: ['lea-tres-haut', 'lea-haut'],
+      logement: ['mixte', 'hugo-haut', 'lea-haut']
+    };
+
+    // Parcourir tous les modules pour activer des items
+    MODULES_DATA.forEach(module => {
+      if (module.isEmotional) return; // traité plus loin
+
+      const sections = module.sections || [];
+      const patExec = patternsExec[module.id] || ['mixte'];
+      const patMental = patternsMental[module.id] || ['mixte'];
+
+      sections.forEach(section => {
+        (section.tasks || []).forEach(task => {
+          if (!rand(0.75)) return; // 75% des tâches activées
+
+          const profileExec = patExec[Math.floor(Math.random() * patExec.length)];
+          const profileMental = patMental[Math.floor(Math.random() * patMental.length)];
+
+          state.saisies[task.id] = {
+            actif: true,
+            time: task.time,
+            unit: task.unit,
+            execution: choisirPart(profileExec),
+            mental: choisirPart(profileMental)
+          };
+        });
+      });
+
+      // Passer le module en mode approfondi pour que le mental soit visible
+      state.modes[module.id] = 'approfondi';
+    });
+
+    // Charge émotionnelle : Léa porte massivement
+    const profilesEmo = ['lea-tres-haut', 'lea-tres-haut', 'lea-haut', 'lea-haut', 'mixte', 'hugo-haut'];
+    const intensites = [2, 3, 3, 4, 2, 3, 4]; // varié, surtout fort
+
+    const moduleEmo = MODULES_DATA.find(m => m.isEmotional);
+    if (moduleEmo) {
+      moduleEmo.sections.forEach(section => {
+        (section.objects || []).forEach(obj => {
+          if (!rand(0.75)) return;
+          const profile = profilesEmo[Math.floor(Math.random() * profilesEmo.length)];
+          const intensite = intensites[Math.floor(Math.random() * intensites.length)];
+          state.emotionnel[obj.id] = {
+            actif: true,
+            repartition: choisirPart(profile),
+            intensite: intensite
+          };
+        });
+      });
+    }
+
+    persister();
+    renderPersonnes();
+    renderModulesGrid();
+    document.getElementById('bilan-page').classList.remove('active');
+    document.getElementById('module-page').classList.remove('active');
+    document.getElementById('home-page').classList.remove('hidden');
+    showToast('Scénario simulé chargé. Allez voir le bilan.', 3500);
+  }
+
+
+  function init() {
+    try {
+      const recharge = recharger();
+      renderPersonnes();
+      renderModulesGrid();
+
+      const btnAjouter = document.getElementById('btn-ajouter-personne');
+      if (btnAjouter) btnAjouter.addEventListener('click', () => {
+        if (state.personnes.length >= 6) { alert('Maximum 6 personnes.'); return; }
+        const newId = 'p' + Date.now();
+        state.personnes.push({
+          id: newId,
+          name: 'Personne ' + (state.personnes.length + 1),
+          couleur: COULEURS_PERSONNES[state.personnes.length % COULEURS_PERSONNES.length]
+        });
+        persister();
+        renderPersonnes();
+        if (state.moduleActuel) renderModule(state.moduleActuel);
+      });
+
+      const liaisons = [
+        ['btn-sauvegarder', 'click', sauvegarder],
+        ['btn-reprendre', 'click', declencherReprendre],
+        ['btn-reset', 'click', toutEffacer],
+        ['btn-simuler', 'click', simuler],
+        ['import-file', 'change', reprendre],
+        ['btn-bilan', 'click', ouvrirBilan]
+      ];
+      liaisons.forEach(([id, evt, fn]) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener(evt, fn);
+      });
+
+      if (recharge) showToast('Travail précédent rechargé.');
+    } catch (e) {
+      console.error('Erreur d\'initialisation:', e);
+      // Afficher l'erreur visiblement pour aider au debug (utile pour mobile)
+      const errDiv = document.createElement('div');
+      errDiv.style.cssText = 'background:#a52a2a;color:#fff;padding:16px;margin:16px;border-radius:4px;font-family:monospace;font-size:12px;';
+      errDiv.textContent = 'Erreur au chargement : ' + (e.message || e) + '. Rechargez la page. Si le problème persiste, signalez-le.';
+      document.body.insertBefore(errDiv, document.body.firstChild);
+    }
+  }
+
+  // Au lieu de lancer init() immédiatement, on attend que le DOM soit prêt
+  // (Safari iOS plus strict que Chrome sur ce point)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
+</body>
+</html>

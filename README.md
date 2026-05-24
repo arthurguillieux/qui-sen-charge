@@ -10,7 +10,7 @@ mais d'ouvrir la conversation.
 
 ## Pour l'utiliser
 
-[👉 Cliquez ici pour ouvrir l'outil](https://VOTRE-IDENTIFIANT.github.io/qui-sen-charge/)
+[👉 Cliquez ici pour ouvrir l'outil](https://arthurguillieux.github.io/qui-sen-charge/)
 
 Ou téléchargez le fichier `index.html` et ouvrez-le dans votre navigateur
 (fonctionne hors-ligne, vos données restent chez vous).
